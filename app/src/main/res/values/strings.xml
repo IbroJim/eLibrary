@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">eLibrary</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="entrance">Вход</string>
+    <string name="create_account">Нет аккаунта?Создать аккаунт!</string>
+    <string name="create_account_regisrty">СОЗДАНИЕ НОВГО АККАУНТА</string>
+    <string name="create_login">Введите логин</string>
+    <string name="create_password">Введите пароль</string>
+    <string name="reapid_password">Повторите пароль</string>
+    <string name="next">Далее</string>
 </resources>

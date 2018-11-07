@@ -9,4 +9,8 @@
     <string name="create_password">Введите пароль</string>
     <string name="reapid_password">Повторите пароль</string>
     <string name="next">Далее</string>
+    <string name="favorites">Избранное</string>
+    <string name="search">Поиск</string>
+    <string name="news">Новости</string>
+    <string name="reader">Читалка</string>
 </resources>

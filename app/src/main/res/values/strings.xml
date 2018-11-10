@@ -16,4 +16,5 @@
     <string name="reader_book">Читалка</string>
     <string name="create_email">Введите email</string>
     <string name="new_book">Новинки</string>
+    <string name="profile">Профиль</string>
 </resources>

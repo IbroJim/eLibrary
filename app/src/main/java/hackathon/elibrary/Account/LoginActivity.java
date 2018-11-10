@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import hackathon.elibrary.Home.HomeActivity;
+import hackathon.elibrary.Profile.ProfileActivity;
 import hackathon.elibrary.R;
 
 public class LoginActivity extends AppCompatActivity {

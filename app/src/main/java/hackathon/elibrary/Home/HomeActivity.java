@@ -19,11 +19,13 @@ public class HomeActivity extends AppCompatActivity {
     private static final int ACTIVITY_NUM=1;
 
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         setupNavigation();
+
     }
 
     private void setupNavigation(){
@@ -34,4 +36,6 @@ public class HomeActivity extends AppCompatActivity {
         MenuItem menuItem=menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }
+
+
 }

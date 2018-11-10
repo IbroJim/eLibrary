@@ -13,4 +13,7 @@
     <string name="search">Поиск</string>
     <string name="news">Новости</string>
     <string name="reader">Читалка</string>
+    <string name="reader_book">Читалка</string>
+    <string name="create_email">Введите email</string>
+    <string name="new_book">Новинки</string>
 </resources>

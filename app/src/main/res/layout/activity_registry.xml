@@ -21,20 +21,27 @@
         style="@style/MYTextInputLayout">
         <EditText
             android:inputType="textPersonName"
+            android:hint="@string/create_email"
+            style="@style/MyEditText"/>
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        style="@style/MYTextInputLayout">
+        <EditText
+            android:inputType="textPersonName"
             android:hint="@string/create_login"
             style="@style/MyEditText"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         style="@style/MYTextInputLayout">
         <EditText
-            android:inputType="textVisiblePassword"
+            android:inputType="textPassword"
             android:hint="@string/create_password"
             style="@style/MyEditText"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         style="@style/MYTextInputLayout">
         <EditText
-            android:inputType="textVisiblePassword"
+            android:inputType="textPassword"
             android:hint="@string/reapid_password"
             style="@style/MyEditText"/>
     </android.support.design.widget.TextInputLayout>

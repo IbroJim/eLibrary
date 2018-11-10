@@ -22,7 +22,7 @@
         <android.support.design.widget.TextInputLayout
            style="@style/MYTextInputLayout">
             <EditText
-                android:inputType="textVisiblePassword"
+                android:inputType="textPassword"
                 android:hint="@string/password"
                 style="@style/MyEditText"/>
         </android.support.design.widget.TextInputLayout>

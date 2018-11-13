@@ -10,6 +10,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import hackathon.elibrary.Favorites.FavoritesActivity;
 import hackathon.elibrary.Home.HomeActivity;
+import hackathon.elibrary.Profile.ProfileActivity;
 import hackathon.elibrary.R;
 import hackathon.elibrary.Reader.ReaderActivity;
 import hackathon.elibrary.Search.SearchActivty;
@@ -52,14 +53,23 @@ public class BottomNavigationSetupOptions {
                             break;
                         }
                         break;
-                    case R.id.ic_reader:
+                    case R.id.ic_user:
                         if(positionActivty!=3){
+                            Intent intent=new Intent(context,ProfileActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            context.startActivity(intent);
+                            break;
+                        }
+                        break;
+                    case R.id.ic_reader:
+                        if(positionActivty!=4){
                             Intent intent=new Intent(context, ReaderActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             context.startActivity(intent);
                             break;
                         }
                     break;
+
 
                 }
                 return false;

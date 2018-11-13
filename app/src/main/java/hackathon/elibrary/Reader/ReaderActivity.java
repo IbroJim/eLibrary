@@ -15,7 +15,7 @@ import hackathon.elibrary.Util.BottomNavigationSetupOptions;
 public class ReaderActivity extends AppCompatActivity {
 
     private Context mContext=ReaderActivity.this;
-    private static final int ACTIVITY_NUM=3;
+    private static final int ACTIVITY_NUM=4;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

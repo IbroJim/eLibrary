@@ -32,18 +32,6 @@ public class FavoritesActivity extends AppCompatActivity {
         setContentView(R.layout.activiy_favourites);
         setupNavigation();
 
-        Toolbar toolbar=findViewById(R.id.toolbar_favorites);
-        setSupportActionBar(toolbar);
-
-        TextView textView=(TextView) findViewById(R.id.name_Asd);
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(mContext,ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 
     private void setupNavigation(){
@@ -54,6 +42,7 @@ public class FavoritesActivity extends AppCompatActivity {
         MenuItem menuItem=menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }
+
 
 
 

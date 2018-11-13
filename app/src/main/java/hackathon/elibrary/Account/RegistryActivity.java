@@ -70,7 +70,9 @@ public class RegistryActivity extends AppCompatActivity {
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                Toast.makeText(RegistryActivity.this,"Df"+response.body().,Toast.LENGTH_SHORT).show();
+                if(response.code()==201) {
+                    Toast.makeText(RegistryActivity.this, "Урааа нахуй" + response.body().getId(), Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

@@ -17,4 +17,7 @@
     <string name="create_email">Введите email</string>
     <string name="new_book">Новинки</string>
     <string name="profile">Профиль</string>
+    <string name="create_name">Введите имя</string>
+    <string name="create_lastname">Введите фамилию</string>
+    <string name="registry_account">Зарегистрироватся</string>
 </resources>

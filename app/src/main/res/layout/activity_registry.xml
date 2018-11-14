@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
@@ -27,7 +28,7 @@
             android:id="@+id/edit_email"
             android:inputType="textPersonName"
             android:hint="@string/create_email"
-            style="@style/MyEditText"/>
+            style="@style/MyEditText" />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         style="@style/MYTextInputLayout">
@@ -70,7 +71,10 @@
             style="@style/MyEditText"/>
     </android.support.design.widget.TextInputLayout>
 
-
+<TextView
+    android:id="@+id/sett_me"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
 
 
 

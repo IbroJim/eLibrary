@@ -1,12 +1,14 @@
 package hackathon.elibrary.Account;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import hackathon.elibrary.R;
@@ -22,28 +24,28 @@ public class RegistryActivity extends AppCompatActivity {
     private Context mContext=RegistryActivity.this;
     private EditText editLastName,editFirstName,editLogin,editPassword,editEmaill;
     private AppCompatButton createAccount;
+    private TextView textResponce;
 
-    private final static String BASE_URL="https://elibrary-app.herokuapp.com/#/docs/";
+    private  static final String BASE_URL="https://elibrary-app.herokuapp.com/#/docs/";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registry);
         setupView();
+        final String langKey="ru";
 
         createAccount=(AppCompatButton) findViewById(R.id.create_account_user);
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 User user=new User(editEmaill.getText().toString(),
                          editLastName.getText().toString(),
                           editFirstName.getText().toString(),
                            editLogin.getText().toString(),
                             editPassword.getText().toString(),
-                            "ru");
+                        langKey.toString());
                 setupConnectionApi(user);
-
             }
         });
     }
@@ -54,30 +56,26 @@ public class RegistryActivity extends AppCompatActivity {
         editLastName=(EditText) findViewById(R.id.edit_last_name);
         editFirstName=(EditText) findViewById(R.id.edit_first_name);
         editPassword=(EditText) findViewById(R.id.edit_password);
+        textResponce=(TextView) findViewById(R.id.sett_me);
 
     }
 
-    private void setupConnectionApi(final User user){
-
+    private void setupConnectionApi(User user) {
         Retrofit.Builder builder= new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
-
         Retrofit retrofit=builder.build();
-
         ApiInterface client=retrofit.create(ApiInterface.class);
         Call<User> call=client.createAccount(user);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                if(response.code()==201) {
-                    Toast.makeText(RegistryActivity.this, "Урааа нахуй" + response.body().getId(), Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(mContext,"good",Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(mContext,"Криворукий",Toast.LENGTH_SHORT).show();
+                textResponce.setText("Проверте почту");
             }
         });
 

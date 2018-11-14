@@ -8,6 +8,8 @@ public class LogIn {
     private String username;
     @SerializedName("password")
     private String password;
+    @SerializedName("id_token")
+    private String id_token;
 
 
 
@@ -16,6 +18,9 @@ public class LogIn {
     public LogIn(String username, String password) {
         this.username = username;
         this.password = password;
+        }
 
+    public String getId_token() {
+        return id_token;
     }
 }

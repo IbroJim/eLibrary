@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private   static final String BASE_URL="https://elibrary-app.herokuapp.com/#/docs/";
     private  final  String SAVE_LOGIN="save_login";
     private final   String SAVE_PASSWORD="save_password";
+    private  final String SAVE_TOKEN="save_token";
     SharedPreferences sharedLogin,sharedPassword;
 
 
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setupView();
-        setupShared();
+        loadShared();
         textView=(TextView) findViewById(R.id.create_account);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,12 +68,12 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         }); }
-private  void  setupView(){
+    private  void  setupView(){
              editLogin=(EditText) findViewById(R.id.login_in_login);
              editPasswrod=(EditText) findViewById(R.id.login_in_passwrod);
              remeberMe=(CheckBox)  findViewById(R.id.save_me);
             }
-private void logInProfile(LogIn logIn){
+    private void logInProfile(LogIn logIn){
     Retrofit.Builder builder= new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create());
@@ -84,31 +85,31 @@ private void logInProfile(LogIn logIn){
         public void onResponse(Call<LogIn> call, Response<LogIn> response) {
             if (response.code()==200){
                 setupChekBox();
+                saveMyToken(response.body().getId_token());
                 Intent intent=new Intent(mContext,HomeActivity.class);
                 startActivity(intent);
             }
         }
-
         @Override
         public void onFailure(Call<LogIn> call, Throwable t) {
             Toast.makeText(mContext," Petyx",Toast.LENGTH_SHORT).show();
         }
     });
 }
-private void setupChekBox(){
+    private void setupChekBox(){
         if(remeberMe.isChecked()){
        sharedLogin=getPreferences(MODE_PRIVATE);
             SharedPreferences.Editor ed=sharedLogin.edit();
             ed.putString(SAVE_LOGIN, editLogin.getText().toString());
-            ed.commit();
+            ed.apply();
 
        sharedPassword=getPreferences(MODE_PRIVATE);
             SharedPreferences.Editor ep=sharedLogin.edit();
             ep.putString(SAVE_PASSWORD,editPasswrod.getText().toString());
-            ep.commit();
+            ep.apply();
         }
 }
-private void setupShared(){
+    private void loadShared(){
         sharedLogin=getPreferences(MODE_PRIVATE);
         String login=sharedLogin.getString(SAVE_LOGIN,"");
         if(login!=null){
@@ -119,6 +120,12 @@ private void setupShared(){
         if(password!=null){
             editPasswrod.setText(password);
         }
+}
+    private void saveMyToken(String nameToken){
+        SharedPreferences sharedPreferences=getSharedPreferences("myToken",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString(SAVE_TOKEN,nameToken);
+        editor.apply();
 }
 
 }

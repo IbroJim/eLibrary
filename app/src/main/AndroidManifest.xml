@@ -24,6 +24,7 @@
         <activity android:name=".Reader.ReaderActivity"/>
         <activity android:name=".Favorites.FavoritesActivity"/>
         <activity android:name=".Profile.ProfileActivity"/>
+        <activity android:name=".Profile.NewBook"/>
     </application>
 
 

@@ -20,4 +20,14 @@
     <string name="create_name">Введите имя</string>
     <string name="create_lastname">Введите фамилию</string>
     <string name="registry_account">Зарегистрироватся</string>
+    <string name="name_user">name</string>
+    <string name="name_book">Название книги</string>
+    <string name="first_name_avtor">Имя автора</string>
+    <string name="last_name_avtor">Фамилия имя</string>
+    <string name="quantity_pages">Количество страниц</string>
+    <string name="date_publication">Даты публикации </string>
+    <string name="select_genre">Выберите жанр</string>
+    <string name="select_image_cover">Выберите картинку</string>
+    <string name="enter_description">Введите описание</string>
+    <string name="send_book">Добавить</string>
 </resources>

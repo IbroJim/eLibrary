@@ -9,4 +9,5 @@
     <color name="colorLink">#4FC3F7</color>
     <color name="colorBackground">#F9F8FE</color>
     <color name="colorBackgroundView">#ffc9a5</color>
+    <color name="colorText">#a7a7a7</color>
 </resources>

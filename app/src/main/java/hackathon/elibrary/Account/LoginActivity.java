@@ -29,12 +29,13 @@ public class LoginActivity extends AppCompatActivity {
     private Context mContext=LoginActivity.this;
     private EditText editLogin,editPasswrod;
     private CheckBox remeberMe;
-    private   static final String BASE_URL="https://elibrary-app.herokuapp.com/#/docs/";
-    private  final  String SAVE_LOGIN="save_login";
-    private final   String SAVE_PASSWORD="save_password";
-    private  final String SAVE_TOKEN="save_token";
     SharedPreferences sharedLogin,sharedPassword;
 
+
+    private  static final String BASE_URL="https://elibrary-app.herokuapp.com/#/docs/";
+    private  final  String SAVE_LOGIN="save_login";
+    private  final   String SAVE_PASSWORD="save_password";
+    private  final String SAVE_TOKEN="save_token";
 
 
     @Override
@@ -53,9 +54,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         appCompatButton=(AppCompatButton) findViewById(R.id.login_in);
-        appCompatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 appCompatButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -67,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
             }
-        }); }
     private  void  setupView(){
              editLogin=(EditText) findViewById(R.id.login_in_login);
              editPasswrod=(EditText) findViewById(R.id.login_in_passwrod);

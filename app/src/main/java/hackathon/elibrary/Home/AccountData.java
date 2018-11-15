@@ -7,7 +7,7 @@ import java.util.List;
 
 import retrofit2.http.GET;
 
-public class AcoountData {
+public class AccountData {
 
 
     @SerializedName("activated")
@@ -38,6 +38,13 @@ public class AcoountData {
     private String login;
     public Boolean getActivated() {
         return activated;
+    }
+
+    public AccountData() {
+    }
+
+    public AccountData(Integer id){
+        this.id=id;
     }
 
     public List<String> getAuthorities() {
@@ -90,5 +97,9 @@ public class AcoountData {
 
     public void setLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

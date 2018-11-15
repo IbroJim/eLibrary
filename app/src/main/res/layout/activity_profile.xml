@@ -20,6 +20,12 @@
                 android:textColor="@color/colorWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/add_book"
+                android:layout_alignParentRight="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_add_book"/>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
@@ -38,7 +44,7 @@
         android:layout_below="@id/image_profile"
         android:layout_centerInParent="true"
         android:textSize="20sp"
-        android:text="IbroJim"
+        android:text="@string/name_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <android.support.design.widget.TabLayout

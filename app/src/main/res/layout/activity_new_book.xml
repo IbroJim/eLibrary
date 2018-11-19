@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <ImageView
         android:layout_margin="16dp"
         android:id="@+id/cover_book_image"
@@ -10,26 +11,55 @@
         android:layout_height="200dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-    <Button
-        android:layout_marginTop="8dp"
+    <RelativeLayout
         android:layout_marginLeft="16dp"
-        android:id="@+id/select_image_cover"
+        android:layout_marginTop="16dp"
+        android:id="@+id/relat_select_image"
         android:layout_below="@id/cover_book_image"
-        android:text="@string/select_image_cover"
-        android:layout_width="150dp"
-        android:textSize="10sp"
-        android:background="@drawable/login_button_background"
-        android:layout_height="30dp" />
-    <Button
-        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp">
+        <Button
+            android:id="@+id/select_image_cover"
+            android:text="@string/select_image_cover"
+            android:layout_width="150dp"
+            android:textSize="10sp"
+            android:background="@drawable/login_button_background"
+            android:layout_height="30dp" />
+        <ImageView
+            android:id="@+id/check_mark_image"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/select_image_cover"
+            android:src="@drawable/ic_check_mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/relat_select_pdf"
         android:layout_marginLeft="16dp"
-        android:id="@+id/select_pdf"
-        android:layout_below="@id/select_image_cover"
-        android:text="Выберите файл"
-        android:layout_width="150dp"
-        android:textSize="10sp"
-        android:background="@drawable/login_button_background"
-        android:layout_height="30dp" />
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/relat_select_image"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp">
+        <Button
+            android:id="@+id/select_pdf"
+            android:text="Выберите файл"
+            android:layout_width="150dp"
+            android:textSize="10sp"
+            android:background="@drawable/login_button_background"
+            android:layout_height="30dp" />
+
+        <ImageView
+            android:id="@+id/chek_mark_pdf"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/select_pdf"
+            android:src="@drawable/ic_check_mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+
 
     <LinearLayout
         android:id="@+id/information"
@@ -39,22 +69,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
+            android:id="@+id/name_book"
             android:hint="@string/name_book"
             style="@style/MyEdiTextNewBook"
             android:backgroundTint="@color/colorAccent"/>
         <EditText
+            android:id="@+id/fisrt_name_avtor"
             android:hint="@string/first_name_avtor"
             style="@style/MyEdiTextNewBook"
             android:backgroundTint="@color/colorAccent"/>
         <EditText
+            android:id="@+id/last_name_avtor"
             android:hint="@string/last_name_avtor"
             style="@style/MyEdiTextNewBook"
             android:backgroundTint="@color/colorAccent"/>
         <EditText
+            android:id="@+id/pages"
+            android:inputType="number"
             android:hint="@string/quantity_pages"
             style="@style/MyEdiTextNewBook"
             android:backgroundTint="@color/colorAccent"/>
         <EditText
+            android:inputType="number"
+            android:id="@+id/date_publication"
             android:hint="@string/date_publication"
             style="@style/MyEdiTextNewBook"
             android:backgroundTint="@color/colorAccent"/>
@@ -78,7 +115,7 @@
         android:background="@drawable/shape_background"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_below="@id/select_pdf"
+        android:layout_below="@id/relat_select_pdf"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content">
@@ -89,6 +126,7 @@
             android:textSize="14sp"
             android:gravity="center"/>
         <EditText
+            android:id="@+id/description_edit"
             android:textColor="@color/colorText"
             android:hint="@string/enter_description"
             android:backgroundTint="@color/colorWhite"
@@ -100,6 +138,7 @@
 
     </LinearLayout>
     <Button
+        android:id="@+id/upload_book"
         android:textSize="10sp"
         android:text="@string/send_book"
         android:layout_marginTop="8dp"
@@ -109,6 +148,11 @@
         android:layout_marginRight="16dp"
         android:layout_width="match_parent"
         android:layout_height="40dp" />
+    <ProgressBar
+        android:id="@+id/progress_new_book"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
 
 
 

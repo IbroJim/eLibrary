@@ -65,7 +65,6 @@
     <!--EditText NewBook-->
   <style name="MyEdiTextNewBook">
       <item name="android:textColorHint">@color/colorText</item>
-      <item name="android:textColor">@color/colorText</item>
       <item name="android:textSize">14sp</item>
       <item name="android:layout_width">match_parent</item>
       <item name="android:layout_height">wrap_content</item>

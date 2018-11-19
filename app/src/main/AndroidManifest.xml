@@ -3,6 +3,7 @@
     package="hackathon.elibrary">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -24,7 +25,7 @@
         <activity android:name=".Reader.ReaderActivity"/>
         <activity android:name=".Favorites.FavoritesActivity"/>
         <activity android:name=".Profile.ProfileActivity"/>
-        <activity android:name=".Profile.NewBook"/>
+        <activity android:name=".Book.NewBook"/>
     </application>
 
 

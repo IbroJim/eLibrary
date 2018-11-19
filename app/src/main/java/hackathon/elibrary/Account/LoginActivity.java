@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private  static final String BASE_URL="https://elibrary-app.herokuapp.com/#/docs/";
     private  final  String SAVE_LOGIN="save_login";
     private  final   String SAVE_PASSWORD="save_password";
-    private  final String SAVE_TOKEN="save_token";
+    private  final String SAVE_TOKEN="saveToken";
 
 
     @Override

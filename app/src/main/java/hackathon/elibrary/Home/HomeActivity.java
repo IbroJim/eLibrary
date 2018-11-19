@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -30,10 +31,12 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private static final int ACTIVITY_NUM=1;
-    private static final String SAVE_TOKEN="save_token";
+    private static final String SAVE_TOKEN="saveToken";
     private static final String TAG="Home";
     private static final String EXTRA_NAME="login";
     private static final String ACCOUNT_ID="MyAccountId";
+
+
 
 
 
@@ -44,7 +47,6 @@ public class HomeActivity extends AppCompatActivity {
         setupNavigation();
         setupRetrofit();
     }
-
     private void setupNavigation(){
         BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.bottom_navigatiom_view_id);
         BottomNavigationSetupOptions.setupBottomNavigatiomViewEx(bottomNavigationViewEx);
@@ -57,9 +59,7 @@ public class HomeActivity extends AppCompatActivity {
          SharedPreferences sharedPreferences=getSharedPreferences("myToken",Context.MODE_PRIVATE);
           return sharedPreferences.getString(SAVE_TOKEN,"");
     }
-
-
-  private void setupRetrofit(){
+    private void setupRetrofit(){
       final String token = getToken();
       Retrofit retrofit=OkHttpHelper.getRetrofitToken(token);
       final ApiInterface apiInterface=retrofit.create(ApiInterface.class);
@@ -78,18 +78,18 @@ public class HomeActivity extends AppCompatActivity {
           }
       });
   }
-
- private void saveLogin(String login){
+    private void saveLogin(String login){
         SharedPreferences sharedPreferences=getSharedPreferences("myLogin",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putString(EXTRA_NAME,login);
         editor.apply();
  }
- private void saveAccountId(Integer id){
+    private void saveAccountId(Integer id){
      SharedPreferences sharedPreferences1=getSharedPreferences("myAccountId",Context.MODE_PRIVATE);
      SharedPreferences.Editor editorInt=sharedPreferences1.edit();
      editorInt.putInt(ACCOUNT_ID,id);
      editorInt.apply();
  }
+
 
 }

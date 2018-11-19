@@ -13,11 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import hackathon.elibrary.Book.NewBook;
 import hackathon.elibrary.R;
 import hackathon.elibrary.Util.BottomNavigationSetupOptions;
 import hackathon.elibrary.Util.SectionPageAdapter;

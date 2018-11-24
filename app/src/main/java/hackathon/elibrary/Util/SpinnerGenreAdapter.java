@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import hackathon.elibrary.Book.Genre;
+import hackathon.elibrary.POJO.Genre;
 import hackathon.elibrary.R;
 
 public class SpinnerGenreAdapter extends ArrayAdapter<Genre> {

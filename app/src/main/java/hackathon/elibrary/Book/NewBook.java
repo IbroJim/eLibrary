@@ -1,23 +1,12 @@
 package hackathon.elibrary.Book;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,29 +21,23 @@ import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import hackathon.elibrary.Profile.Profile;
+import hackathon.elibrary.POJO.CreateBook;
+import hackathon.elibrary.POJO.Genre;
+import hackathon.elibrary.POJO.Profile;
 import hackathon.elibrary.R;
 import hackathon.elibrary.Util.ApiInterface;
 import hackathon.elibrary.Util.OkHttpHelper;
 import hackathon.elibrary.Util.SpinnerGenreAdapter;
-import okhttp3.Interceptor;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NewBook extends AppCompatActivity implements View.OnClickListener {
 
@@ -63,7 +46,6 @@ public class NewBook extends AppCompatActivity implements View.OnClickListener {
     private static final String ACCOUNT_ID = "MyAccountId";
     private static final String SAVE_TOKEN = "saveToken";
     private static final String SAVE_PROFILE = "profileID";
-    private static final String BASE_URL="https://elibrary-app.herokuapp.com/#/docs/";
 
     private Spinner spinner;
     private SpinnerGenreAdapter mAdapter;
@@ -72,9 +54,8 @@ public class NewBook extends AppCompatActivity implements View.OnClickListener {
     private EditText titleBook,lastNameAvtor, firstNameAvtor, description,page,datePublication;
     private Integer genreId;
     private ImageView imageCover,checkMarkImage,checkMarkPdf;
-    private String imagePath,pdfPath;
+    private String imagePath,pdfPath,token;
     private long idBook;
-    private String token;
     private ProgressBar progressBar;
 
 
@@ -268,7 +249,7 @@ public class NewBook extends AppCompatActivity implements View.OnClickListener {
     }
     private void uploadBookInformation() {
 
-              Integer profileId = getProfileId();
+            Integer profileId = getProfileId();
             String value = page.getText().toString();
             Integer pageInteger = Integer.parseInt(value);
 

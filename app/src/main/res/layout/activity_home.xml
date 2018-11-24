@@ -25,6 +25,7 @@
             android:layout_weight="50"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/read_data"
              style="@style/MyNameList"
                 android:text="@string/new_book"/>
             <android.support.v7.widget.RecyclerView
@@ -37,7 +38,7 @@
             android:layout_weight="50"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/title_token"
+                android:id="@+id/title_database"
               style="@style/MyNameList"
                 android:text="Актуальное"/>
             <android.support.v7.widget.RecyclerView

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import hackathon.elibrary.Book.DetailsBook;
 import hackathon.elibrary.Book.NewBook;
 import hackathon.elibrary.R;
 import hackathon.elibrary.Util.BottomNavigationSetupOptions;
@@ -45,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext,NewBook.class);
+                Intent intent=new Intent(mContext,DetailsBook.class);
                 startActivity(intent);
             }
         });

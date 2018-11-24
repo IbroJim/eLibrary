@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <android.support.v7.widget.CardView
+        android:layout_margin="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/book_cover"
+            android:layout_margin="16dp"
+            android:layout_width="85dp"
+            android:layout_height="105dp" />
+        <TextView
+            android:textColor="@color/colorBlack"
+            android:id="@+id/name_book"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_toRightOf="@id/book_cover"
+            android:text="@string/name_book"
+             />
+        <LinearLayout
+            android:id="@+id/linear_avtor"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:layout_toRightOf="@id/book_cover"
+            android:layout_below="@id/name_book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            <TextView
+                android:text="@string/first_name_avtor"
+                android:id="@+id/first_name_avtor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginLeft="4dp"
+                android:text="@string/last_name_avtor"
+                android:id="@+id/last_name_avtor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@id/book_cover"
+                android:layout_below="@id/linear_avtor"
+                android:text="@string/select_genre"
+                android:id="@+id/book_genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+<LinearLayout
+    android:layout_below="@id/book_genre"
+    android:layout_marginTop="8dp"
+    android:layout_toRightOf="@id/book_cover"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <TextView
+        android:text="@string/book_page"
+        android:id="@+id/book_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:text="@string/book_date_publication"
+        android:id="@+id/date_publication"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>

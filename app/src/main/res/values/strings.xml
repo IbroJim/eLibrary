@@ -23,11 +23,18 @@
     <string name="name_user">name</string>
     <string name="name_book">Название книги</string>
     <string name="first_name_avtor">Имя автора</string>
-    <string name="last_name_avtor">Фамилия имя</string>
+    <string name="last_name_avtor">Фамилия автора</string>
     <string name="quantity_pages">Количество страниц</string>
     <string name="date_publication">Даты публикации </string>
     <string name="select_genre">Выберите жанр</string>
     <string name="select_image_cover">Выберите картинку</string>
     <string name="enter_description">Введите описание</string>
     <string name="send_book">Добавить</string>
+    <string name="download">Скачать</string>
+    <string name="enter_word">Введите слово</string>
+    <string name="translate">Перевести</string>
+    <string name="book_page"> %1$d страниц</string>
+    <string name="book_date_publication">Год издания-%1$d </string>
+    <string name="more_detailed">Подробнее</string>
+    <string name="add_user">Добавлено %1$s </string>
 </resources>

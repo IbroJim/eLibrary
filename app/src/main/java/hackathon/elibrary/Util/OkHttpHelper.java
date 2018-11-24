@@ -18,7 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class OkHttpHelper {
 
     private   static final String BASE_URL="https://elibrary-app.herokuapp.com/#/docs/";
-    private OkHttpClient.Builder okHttpClient=null;
 
 
     public static Retrofit getRetrofitToken(final String token){

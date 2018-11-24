@@ -1,20 +1,36 @@
 package hackathon.elibrary.Home;
 
+import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Spinner;
+import android.view.View;
 import android.widget.TextView;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-import hackathon.elibrary.Profile.ProfileActivity;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
+import hackathon.elibrary.MyDataBase.DatabaseHelper;
+import hackathon.elibrary.MyDataBase.TranslateSchema;
+import hackathon.elibrary.MyDataBase.TranslateSchema.TranslateTable;
+import hackathon.elibrary.POJO.AccountData;
+import hackathon.elibrary.POJO.Translate;
+import hackathon.elibrary.POJO.User;
 import hackathon.elibrary.R;
 
 import hackathon.elibrary.Util.ApiInterface;
@@ -28,15 +44,17 @@ public class HomeActivity extends AppCompatActivity {
 
     private Context mContext=HomeActivity.this;
     private TextView titleToken;
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase sqLiteDatabase;
+    private ContentValues contentValues;
 
 
     private static final int ACTIVITY_NUM=1;
     private static final String SAVE_TOKEN="saveToken";
-    private static final String TAG="Home";
+    private static final String TAG="HomeActivity";
     private static final String EXTRA_NAME="login";
     private static final String ACCOUNT_ID="MyAccountId";
-
-
+    private static final String token="ASDa";
 
 
 
@@ -45,7 +63,22 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         setupNavigation();
-        setupRetrofit();
+        createFolder();
+
+
+
+    }
+    private void createFolder(){
+        File folder=new File(Environment.getExternalStorageDirectory()+"/eLibrary");
+        boolean succes=true;
+        if(!folder.exists()){
+            succes=folder.mkdir();
+        }
+        if(succes){
+            Log.d(TAG,"Созданно");
+        }else {
+            Log.d(TAG,"Ошибка");
+        }
     }
     private void setupNavigation(){
         BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.bottom_navigatiom_view_id);
@@ -90,6 +123,12 @@ public class HomeActivity extends AppCompatActivity {
      editorInt.putInt(ACCOUNT_ID,id);
      editorInt.apply();
  }
+
+
+
+
+
+
 
 
 }

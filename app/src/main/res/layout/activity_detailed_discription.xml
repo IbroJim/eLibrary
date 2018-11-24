@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_margin="16dp"
+        android:id="@+id/cover_book_image"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <LinearLayout
+        android:id="@+id/information"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@+id/cover_book_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/name_book"
+            style="@style/MyTexViewDeatails"
+            android:text="@string/name_book" />
+        <LinearLayout
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/first_name_avtor"
+                android:textColor="@color/colorBlack"
+                android:text="@string/first_name_avtor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/last_name_avtor"
+                android:layout_marginLeft="2dp"
+                android:textColor="@color/colorBlack"
+                android:text="@string/last_name_avtor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/book_genre"
+            style="@style/MyTexViewDeatails"
+            android:text="@string/select_genre"/>
+        <TextView
+            android:id="@+id/book_page"
+            style="@style/MyTexViewDeatails"
+            android:text="@string/book_page" />
+        <TextView
+            android:id="@+id/date_publication"
+            android:text="@string/book_date_publication"
+            style="@style/MyTexViewDeatails"/>
+        <TextView
+            android:id="@+id/add_user"
+            android:text="@string/add_user"
+            style="@style/MyTexViewDeatails"/>
+    </LinearLayout>
+    <com.like.LikeButton
+        android:layout_toRightOf="@id/cover_book_image"
+        android:layout_below="@id/information"
+        android:layout_marginTop="8dp"
+        app:icon_type="heart"
+        app:icon_size="25dp"
+        android:id="@+id/hear_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"/>
+    <Button
+        android:layout_marginLeft="16dp"
+        android:layout_below="@id/cover_book_image"
+        android:id="@+id/download_books"
+        android:textSize="12sp"
+        android:text="@string/download"
+        android:background="@drawable/login_button_background"
+        android:layout_width="150dp"
+        android:layout_height="30dp" />
+    <LinearLayout
+        android:id="@+id/description_layout"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/shape_background"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_below="@id/download_books"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+    <TextView
+        style="@style/MyTexViewDeatails"
+        android:text="Описание"
+        android:layout_gravity="center"/>
+    <TextView
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/book_description"
+        android:textColor="@color/colorText"
+        android:minLines="6"
+        android:textSize="14sp"
+        android:gravity="left|top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>

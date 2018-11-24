@@ -13,11 +13,28 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+          <EditText
+              android:inputType="textPersonName"
+              android:id="@+id/edit_word"
+              android:layout_toLeftOf="@id/translate_text"
+              android:paddingLeft="5dp"
+              android:hint="@string/enter_word"
+              android:layout_marginBottom="8dp"
+              android:layout_marginTop="8dp"
+              android:layout_marginRight="8dp"
+              android:layout_centerVertical="true"
+              android:background="@drawable/shape_background"
+              android:backgroundTint="@color/colorWhite"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" />
             <TextView
-                android:layout_centerInParent="true"
-                android:text="@string/reader_book"
+                android:padding="5dp"
                 android:textSize="20sp"
                 android:textColor="@color/colorWhite"
+                android:layout_centerVertical="true"
+                android:id="@+id/translate_text"
+                android:layout_alignParentRight="true"
+                android:text="@string/translate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>

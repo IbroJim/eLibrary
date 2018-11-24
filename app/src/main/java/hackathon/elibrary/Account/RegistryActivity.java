@@ -1,18 +1,25 @@
 package hackathon.elibrary.Account;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
+import hackathon.elibrary.POJO.User;
 import hackathon.elibrary.R;
 import hackathon.elibrary.Util.ApiInterface;
+import hackathon.elibrary.Util.OkHttpHelper;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,6 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RegistryActivity extends AppCompatActivity {
 
     private Context mContext=RegistryActivity.this;
+    private static final String TAG="RegistryActivity";
     private EditText editLastName,editFirstName,editLogin,editPassword,editEmaill;
     private AppCompatButton createAccount;
     private TextView textResponce;
@@ -34,17 +42,19 @@ public class RegistryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registry);
         setupView();
         final String langKey="ru";
+        final boolean activated=false;
 
         createAccount=(AppCompatButton) findViewById(R.id.create_account_user);
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User user=new User(editEmaill.getText().toString(),
+                User user=new User(activated,
+                        editEmaill.getText().toString(),
                          editLastName.getText().toString(),
                           editFirstName.getText().toString(),
                            editLogin.getText().toString(),
                             editPassword.getText().toString(),
-                        langKey.toString());
+                               langKey);
                 setupConnectionApi(user);
             }
         });
@@ -61,16 +71,31 @@ public class RegistryActivity extends AppCompatActivity {
     }
 
     private void setupConnectionApi(User user) {
+        OkHttpClient.Builder httpClient=new OkHttpClient.Builder();
+        httpClient.addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request original=chain.request();
+                Request request=original.newBuilder()
+                        .addHeader("Content-Type","application/json")
+                        .addHeader("Accept","*/*")
+                        .method(original.method(),original.body()).build();
+                return chain.proceed(request);
+            }
+        });
         Retrofit.Builder builder= new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create());
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient.build());
         Retrofit retrofit=builder.build();
         ApiInterface client=retrofit.create(ApiInterface.class);
         Call<User> call=client.createAccount(user);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                Toast.makeText(mContext,"good",Toast.LENGTH_SHORT).show();
+              if(response.code()==400){
+                  Toast.makeText(mContext,"Логин или Email занят",Toast.LENGTH_SHORT).show();
+              }
             }
 
             @Override

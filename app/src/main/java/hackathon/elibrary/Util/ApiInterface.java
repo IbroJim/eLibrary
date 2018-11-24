@@ -1,20 +1,22 @@
 package hackathon.elibrary.Util;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import hackathon.elibrary.Account.LogIn;
-import hackathon.elibrary.Account.User;
-import hackathon.elibrary.Book.UploadBookPojo;
-import hackathon.elibrary.Home.AccountData;
-import hackathon.elibrary.Book.CreateBook;
-import hackathon.elibrary.Book.Genre;
-import hackathon.elibrary.Profile.Profile;
-import okhttp3.MultipartBody;
+import hackathon.elibrary.POJO.AddFavorite;
+import hackathon.elibrary.POJO.Book;
+import hackathon.elibrary.POJO.BookDetails;
+import hackathon.elibrary.POJO.LogIn;
+import hackathon.elibrary.POJO.User;
+import hackathon.elibrary.POJO.AccountData;
+import hackathon.elibrary.POJO.CreateBook;
+import hackathon.elibrary.POJO.Genre;
+import hackathon.elibrary.POJO.Profile;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -54,5 +56,20 @@ public interface ApiInterface {
     Call<ResponseBody> uploadImageFile(@Part ("file\"; filename=\"pp.jpg\" ") RequestBody file,
                                         @Query("id") long id,
                                         @Query("type") String type );
+
+
+  @GET("api/books/{id}/download")
+    Call<ResponseBody> downLoadBook(@Path ("id") long id);
+
+  @GET("api/books/")
+    Call<ArrayList<Book>> getAllBooks();
+
+  @GET("api/books/{id}")
+    Call<BookDetails> getBook(@Path("id") long id);
+
+  @POST("api/favorite-books")
+    Call<AddFavorite> createFavoriteBook(@Body AddFavorite addFavorite);
+  @DELETE("api/favorite-books/{id}")
+    Call<ResponseBody> deleteFavoriteBook(@Path("id") long id);
 
 }

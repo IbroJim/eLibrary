@@ -72,7 +72,7 @@
 
     <!--TextView style book details-->
     <style name="MyTexViewDeatails">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/colorBlack</item>

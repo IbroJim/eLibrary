@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -45,8 +46,8 @@ public class SearchActivty extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private BookRecyclerAdapter bookRecyclerAdapter;
-    private String token;
     private Context mContext=SearchActivty.this;
+    private ProgressBar progressBar;
 
 
 
@@ -55,10 +56,11 @@ public class SearchActivty extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         setupNavigation();
-        token=getToken();
         getAllBooks();
-    }
+        setupView();
 
+
+    }
     private void setupNavigation(){
         BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.bottom_navigatiom_view_id);
         BottomNavigationSetupOptions.setupBottomNavigatiomViewEx(bottomNavigationViewEx);
@@ -68,7 +70,7 @@ public class SearchActivty extends AppCompatActivity {
         menuItem.setChecked(true);
     }
     private void getAllBooks(){
-        Retrofit retrofit=OkHttpHelper.getRetrofitToken(token);
+        Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
         ApiInterface apiInterface=retrofit.create(ApiInterface.class);
         Call<ArrayList<Book>> call=apiInterface.getAllBooks();
         call.enqueue(new Callback<ArrayList<Book>>() {
@@ -76,7 +78,7 @@ public class SearchActivty extends AppCompatActivity {
             public void onResponse(Call<ArrayList<Book>> call, Response<ArrayList<Book>> response) {
                 if(response.code()==200){
                     setupRecyclerView(response.body(),mContext);
-
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -111,6 +113,10 @@ public class SearchActivty extends AppCompatActivity {
 
             }
         }));
+    }
+    private void setupView(){
+        progressBar=(ProgressBar) findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
 }

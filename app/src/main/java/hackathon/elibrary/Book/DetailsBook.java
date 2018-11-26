@@ -47,11 +47,12 @@ public class DetailsBook extends AppCompatActivity  {
 
     private Button downlaodBookButton;
     private LikeButton addFavoritesBook;
-    private String token,name;
+    private String nameFile;
     private Context mContext=DetailsBook.this;
-    private TextView txtNameBook,txtLastName,txtFirstName,txtPage,txtDatePublication,txtGenre,txtDiscription;
-    private int idInteger,idFavorite;
-    private long idBookLong;
+    private TextView txtNameBook,txtLastName,txtFirstName,txtPage,txtDatePublication,txtGenre,txtDiscription,txtCreatedBy;
+    private int idFavorite;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,11 +60,8 @@ public class DetailsBook extends AppCompatActivity  {
         Log.d("Details","Hello world");
         setContentView(R.layout.activity_detailed_discription);
         setupView();
-        token=getToken();
-        idInteger =getIdBook();
-       idBookLong=Long.parseLong(String.valueOf(idInteger));
-        Log.d(TAG,"long id"+idBookLong);
-        getBook(idBookLong);
+        clickListenner();
+        getBook();
     }
     private void setupView(){
         txtNameBook=(TextView) findViewById(R.id.name_book);
@@ -74,38 +72,17 @@ public class DetailsBook extends AppCompatActivity  {
         txtDiscription=(TextView)findViewById(R.id.book_description);
         txtDatePublication=(TextView) findViewById(R.id.date_publication);
         downlaodBookButton=(Button) findViewById(R.id.download_books);
-        downlaodBookButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("Details","Enter");
-                downloadBook();
-            }
-        });
-       addFavoritesBook=(LikeButton) findViewById(R.id.hear_button);
-        addFavoritesBook.setOnLikeListener(new OnLikeListener() {
-            @Override
-            public void liked(LikeButton likeButton) {
-                  AddFavorite addFavorite=new AddFavorite(idInteger,1001);
-                  createFavoriteBook(addFavorite);
-            }
-
-            @Override
-            public void unLiked(LikeButton likeButton) {
-                    deleteFavoriteBook(idFavorite);
-            }
-        });
+        txtCreatedBy=(TextView) findViewById(R.id.created_by);
     }
     private void downloadBook(){
-        Log.d("Home","download");
-        long id=1701;
         OkHttpClient.Builder httpClient=new OkHttpClient.Builder();
         httpClient.addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request original=chain.request();
                 Request request=original.newBuilder()
-                        .addHeader("Accept","*/*")
-                        .addHeader("Authorization","Bearer "+ token).method(original.method(),original.body()).build();
+                        .addHeader("Accept","application/pdf")
+                        .addHeader("Authorization","Bearer "+ getToken()).method(original.method(),original.body()).build();
                 return chain.proceed(request);
             }
         });
@@ -115,14 +92,15 @@ public class DetailsBook extends AppCompatActivity  {
                 .client(httpClient.build())
                 .build();
         ApiInterface apiInterface= retrofit.create(ApiInterface.class);
-        Call<ResponseBody> call=apiInterface.downLoadBook(id);
+        Call<ResponseBody> call=apiInterface.downLoadBook(getIdBook());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                Log.d("Details","id"+response.code());
-                name="Ibrojim";
-                boolean succes=writeResponceBodyToDisk(name,response.body());
-                Log.d("Details","is "+succes);
+                if (response.code() == 200) {
+                    assert response.body() != null;
+                    boolean succes = writeResponceBodyToDisk(nameFile, response.body());
+                    Log.d("Details", "is " + succes);
+                }
             }
 
             @Override
@@ -130,6 +108,7 @@ public class DetailsBook extends AppCompatActivity  {
 
             }
         });
+
     }
     private String getToken() {
         SharedPreferences sharedPreferences = getSharedPreferences("myToken", Context.MODE_PRIVATE);
@@ -137,7 +116,7 @@ public class DetailsBook extends AppCompatActivity  {
     }
     private boolean writeResponceBodyToDisk(String name, ResponseBody body){
         try {
-            File pdfFile=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),name);
+            File pdfFile=new File(Environment.getExternalStoragePublicDirectory("/eLibrary"),name);
             InputStream inputStream=null;
             OutputStream outputStream=null;
             try {
@@ -175,23 +154,24 @@ public class DetailsBook extends AppCompatActivity  {
             return  false;
         }
     }
-    private int getIdBook(){
+    private long getIdBook(){
         Intent intent=getIntent();
         int idBook=intent.getIntExtra(ID_BOOK,0);
         Toast.makeText(mContext,"id"+idBook,Toast.LENGTH_SHORT).show();
-        return idBook;
+        Long id=Long.parseLong(String.valueOf(idBook));
+        return id;
     }
-    private void getBook(long id){
-        Retrofit retrofit=OkHttpHelper.getRetrofitToken(token);
+    private void getBook(){
+        Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
         ApiInterface apiInterface=retrofit.create(ApiInterface.class);
-        Call<BookDetails> call=apiInterface.getBook(id);
+        Call<BookDetails> call=apiInterface.getBook(getIdBook());
         call.enqueue(new Callback<BookDetails>() {
             @Override
             public void onResponse(Call<BookDetails> call, retrofit2.Response<BookDetails> response) {
                    if(response.code()==200){
                      setBookInformation(response.body().getTitle(),response.body().getAuthorLastName(),response.body().getAuthorFirstName(),
                              response.body().getPages(),response.body().getYearOfPublishing(),response.body().getGenreName(),
-                             response.body().getDescription());
+                             response.body().getDescription(),response.body().getCreatedBy(),response.body().getId());
                    }
             }
 
@@ -201,7 +181,7 @@ public class DetailsBook extends AppCompatActivity  {
             }
         });
     }
-    private void setBookInformation(String nameBook,String lastName,String firstName,Integer page, Integer datePublication,String genre,String discription){
+    private void setBookInformation(String nameBook,String lastName,String firstName,Integer page, Integer datePublication,String genre,String discription, String createdBy,Integer id){
      txtNameBook.setText(nameBook);
      txtLastName.setText(lastName);
      txtFirstName.setText(firstName);
@@ -211,11 +191,13 @@ public class DetailsBook extends AppCompatActivity  {
      String dateString=getString(R.string.book_date_publication,datePublication);
      txtDatePublication.setText(dateString);
      txtDiscription.setText(discription);
-
+     String createdString=getString(R.string.add_user,createdBy);
+     txtCreatedBy.setText(createdString);
+     nameFile=nameBook+id+".pdf";
 
     }
     private void createFavoriteBook(AddFavorite addFavorite){
-        Retrofit retrofit=OkHttpHelper.getRetrofitToken(token);
+        Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
         ApiInterface apiInterface=retrofit.create(ApiInterface.class);
         Call<AddFavorite> call=apiInterface.createFavoriteBook(addFavorite);
         call.enqueue(new Callback<AddFavorite>() {
@@ -236,7 +218,7 @@ public class DetailsBook extends AppCompatActivity  {
     }
     private void deleteFavoriteBook(int id){
             Long idFavorite=Long.parseLong(String.valueOf(id));
-            Retrofit retrofit=OkHttpHelper.getRetrofitToken(token);
+            Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
             ApiInterface apiInterface=retrofit.create(ApiInterface.class);
             Call<ResponseBody> call=apiInterface.deleteFavoriteBook(idFavorite);
             call.enqueue(new Callback<ResponseBody>() {
@@ -251,5 +233,28 @@ public class DetailsBook extends AppCompatActivity  {
 
                 }
             });
+    }
+    private void clickListenner(){
+        downlaodBookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Details","Enter");
+                downloadBook();
+            }
+        });
+        final Integer id=Integer.parseInt(String.valueOf(getIdBook()));
+        addFavoritesBook=(LikeButton) findViewById(R.id.hear_button);
+        addFavoritesBook.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                AddFavorite addFavorite=new AddFavorite(id,1001);
+                createFavoriteBook(addFavorite);
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                deleteFavoriteBook(idFavorite);
+            }
+        });
     }
 }

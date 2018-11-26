@@ -43,10 +43,6 @@ import retrofit2.Retrofit;
 public class HomeActivity extends AppCompatActivity {
 
     private Context mContext=HomeActivity.this;
-    private TextView titleToken;
-    private DatabaseHelper databaseHelper;
-    private SQLiteDatabase sqLiteDatabase;
-    private ContentValues contentValues;
 
 
     private static final int ACTIVITY_NUM=1;
@@ -64,6 +60,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         setupNavigation();
         createFolder();
+        getAccountId();
 
 
 
@@ -92,7 +89,7 @@ public class HomeActivity extends AppCompatActivity {
          SharedPreferences sharedPreferences=getSharedPreferences("myToken",Context.MODE_PRIVATE);
           return sharedPreferences.getString(SAVE_TOKEN,"");
     }
-    private void setupRetrofit(){
+    private void  getAccountId(){
       final String token = getToken();
       Retrofit retrofit=OkHttpHelper.getRetrofitToken(token);
       final ApiInterface apiInterface=retrofit.create(ApiInterface.class);

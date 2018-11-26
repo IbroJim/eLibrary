@@ -55,12 +55,12 @@
             android:text="@string/book_date_publication"
             style="@style/MyTexViewDeatails"/>
         <TextView
-            android:id="@+id/add_user"
+            android:id="@+id/created_by"
             android:text="@string/add_user"
             style="@style/MyTexViewDeatails"/>
     </LinearLayout>
     <com.like.LikeButton
-        android:layout_toRightOf="@id/cover_book_image"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/information"
         android:layout_marginTop="8dp"
         app:icon_type="heart"

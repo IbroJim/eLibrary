@@ -16,9 +16,9 @@
 
         <ImageView
             android:id="@+id/book_cover"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:layout_width="85dp"
-            android:layout_height="105dp" />
+            android:layout_height="85dp" />
         <TextView
             android:textColor="@color/colorBlack"
             android:id="@+id/name_book"
@@ -51,32 +51,14 @@
         </LinearLayout>
             <TextView
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_toRightOf="@id/book_cover"
                 android:layout_below="@id/linear_avtor"
                 android:text="@string/select_genre"
                 android:id="@+id/book_genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-<LinearLayout
-    android:layout_below="@id/book_genre"
-    android:layout_marginTop="8dp"
-    android:layout_toRightOf="@id/book_cover"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-    <TextView
-        android:text="@string/book_page"
-        android:id="@+id/book_page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:layout_marginLeft="10dp"
-        android:text="@string/book_date_publication"
-        android:id="@+id/date_publication"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-</LinearLayout>
 
 
 

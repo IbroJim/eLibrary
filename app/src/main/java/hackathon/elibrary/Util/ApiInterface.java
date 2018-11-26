@@ -51,7 +51,7 @@ public interface ApiInterface {
     Call<ResponseBody> uploadBookFile(@Part ("file\"; filename=\"pp.pdf\" ") RequestBody file,
                                         @Query("id") long id,
                                         @Query("type") String type );
-  @Multipart
+   @Multipart
     @POST("api/books/upload")
     Call<ResponseBody> uploadImageFile(@Part ("file\"; filename=\"pp.jpg\" ") RequestBody file,
                                         @Query("id") long id,
@@ -69,7 +69,13 @@ public interface ApiInterface {
 
   @POST("api/favorite-books")
     Call<AddFavorite> createFavoriteBook(@Body AddFavorite addFavorite);
+
+
   @DELETE("api/favorite-books/{id}")
     Call<ResponseBody> deleteFavoriteBook(@Path("id") long id);
+
+
+  @GET("api/books/downloadCover/{bookId}")
+    Call<ResponseBody>  downloadCover(@Path("bookId")long bookId);
 
 }

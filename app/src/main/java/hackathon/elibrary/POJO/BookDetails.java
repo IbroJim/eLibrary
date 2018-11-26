@@ -81,4 +81,12 @@ public class BookDetails {
     public String getAuthorLastName() {
         return authorLastName;
     }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public Integer getId() {
+        return id;
+    }
 }

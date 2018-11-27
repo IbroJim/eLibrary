@@ -121,6 +121,7 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                Log.d("Details","is "+response.code());
                 if (response.code() == 200) {
                     assert response.body() != null;
                     boolean succes = writeResponceBodyToDisk(nameFile, response.body());
@@ -275,21 +276,6 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
             });
     }
     private void clickListenner(){
-     /**   downlaodBookButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("Details","Enter");
-                Cursor cursor=sqLiteDatabase.query(BookTable.NAME_TABLE_TWO,new String[]{BookTable.NameOfFields.ID_BOOK},"idBook=?",
-                        new String[]{String.valueOf(getIdBook())},null,null,null,null);
-                if(cursor.moveToFirst()){
-                    do{
-                        buttonRead.setVisibility(View.VISIBLE);
-                        Toast.makeText(mContext,"Эта книга уже скачена",Toast.LENGTH_SHORT).show();
-                    }while (cursor.moveToNext());
-                }else {  downloadBook();}
-
-            }
-        });**/
         final Integer id=Integer.parseInt(String.valueOf(getIdBook()));
 
         addFavoritesBook.setOnLikeListener(new OnLikeListener() {
@@ -385,7 +371,6 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
         SharedPreferences sharedPreferences=getSharedPreferences("profileId",Context.MODE_PRIVATE);
         return sharedPreferences.getInt(SAVE_PROFILE,0);
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){

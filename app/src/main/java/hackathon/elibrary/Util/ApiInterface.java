@@ -86,5 +86,8 @@ public interface ApiInterface {
   @GET("api/read-books")
     Call<ArrayList<FavoriteBook>> getAllreadBooks();
 
+  @POST("api/read-books")
+    Call<AddFavorite> createReadBook(@Body AddFavorite addFavorite);
+
 
 }

@@ -3,6 +3,7 @@ package hackathon.elibrary.Book;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -18,13 +19,22 @@ import android.widget.Toast;
 import hackathon.elibrary.MyDataBase.BookSchema;
 import hackathon.elibrary.MyDataBase.BookSchema.BookTable;
 import hackathon.elibrary.MyDataBase.DatabaseHelper;
+import hackathon.elibrary.POJO.AddFavorite;
 import hackathon.elibrary.R;
 import hackathon.elibrary.Reader.ReaderActivity;
+import hackathon.elibrary.Util.ApiInterface;
+import hackathon.elibrary.Util.OkHttpHelper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
-public class DetailsBookProfil extends AppCompatActivity {
+public class DetailsBookProfil extends AppCompatActivity implements View.OnClickListener{
 
     private static final String ID_BOOK_SQL = "idBookSql";
     private static final String NAME_FILE_PDF = "namePdfFile";
+    private static final String SAVE_TOKEN = "saveToken";
+    private static final String SAVE_PROFILE = "profileID";
 
 
 
@@ -35,6 +45,7 @@ public class DetailsBookProfil extends AppCompatActivity {
     private TextView txtNameBook,txtLastName,txtFirstName,txtPage,txtDatePublication,txtGenre,txtDiscription,txtCreatedBy;
     private ImageView imageCover;
     private String nameFile;
+    private Integer idBook;
 
 
 
@@ -45,7 +56,6 @@ public class DetailsBookProfil extends AppCompatActivity {
         setupDatabase();
         setupView();
         setupDataView();
-        clickListenner();
     }
     private void  setupDatabase(){
         databaseHelper=new DatabaseHelper(mContext);
@@ -67,12 +77,16 @@ public class DetailsBookProfil extends AppCompatActivity {
         txtDatePublication=(TextView) findViewById(R.id.date_publication);
         txtCreatedBy=(TextView) findViewById(R.id.created_by);
         imageCover=(ImageView) findViewById(R.id.cover_book_image);
+        Button readBook=(Button)findViewById(R.id.read_book);
+        readBook.setOnClickListener(this);
+        Button addReader=(Button) findViewById(R.id.add_read);
+        addReader.setOnClickListener(this);
     }
     private void setupDataView(){
         Integer id=getIdSql();
         Log.d("Details","Hello world");
         String[] projection={BookTable.NameOfFields.ID,BookTable.NameOfFields.TITLE,BookTable.NameOfFields.FIRST_NAME, BookTable.NameOfFields.LAST_NAME,BookTable.NameOfFields.GENRE,BookTable.NameOfFields.PAGE,
-        BookTable.NameOfFields.NAME_FILE,BookTable.NameOfFields.DISCRIPTION,BookTable.NameOfFields.DATE_PIBLICATION,BookTable.NameOfFields.CREATED_BY};
+        BookTable.NameOfFields.NAME_FILE,BookTable.NameOfFields.DISCRIPTION,BookTable.NameOfFields.DATE_PIBLICATION,BookTable.NameOfFields.CREATED_BY,BookTable.NameOfFields.ID_BOOK};
         Cursor cursor=sqLiteDatabase.query(BookTable.NAME_TABLE_TWO,projection,"_id=?",new String[]{String.valueOf(id)},null,null,null);
         if(cursor.moveToFirst()){
             int columnTitle=cursor.getColumnIndex(BookTable.NameOfFields.TITLE);
@@ -84,6 +98,7 @@ public class DetailsBookProfil extends AppCompatActivity {
             int columnDatePublication=cursor.getColumnIndex(BookTable.NameOfFields.DATE_PIBLICATION);
             int columnDiscription=cursor.getColumnIndex(BookTable.NameOfFields.DISCRIPTION);
             int fileName=cursor.getColumnIndex(BookTable.NameOfFields.NAME_FILE);
+            int columnIdBook=cursor.getColumnIndex(BookTable.NameOfFields.ID_BOOK);
             do {
                 txtNameBook.setText(cursor.getString(columnTitle));
                 txtLastName.setText(cursor.getString(columnLastName));
@@ -97,7 +112,7 @@ public class DetailsBookProfil extends AppCompatActivity {
                 String createdString=getString(R.string.add_user,cursor.getString(columnCreatedBy));
                 txtCreatedBy.setText(createdString);
                 nameFile=cursor.getString(fileName);
-
+                idBook=cursor.getInt(columnIdBook);
             }while (cursor.moveToNext());
         }else {
 
@@ -105,17 +120,45 @@ public class DetailsBookProfil extends AppCompatActivity {
 
 
     }
-    private void clickListenner(){
-        Button button=(Button)findViewById(R.id.read_book);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.read_book:
                 Intent intent=new Intent(mContext,ReaderActivity.class);
                 intent.putExtra(NAME_FILE_PDF,nameFile);
                 startActivity(intent);
+                break;
+            case R.id.add_read:
+                AddFavorite addFavorite=new AddFavorite(idBook,getProfileId());
+                createReadeBook(addFavorite);
+                break;
+        }
+    }
+    private Integer getProfileId(){
+        SharedPreferences sharedPreferences=getSharedPreferences("profileId",Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(SAVE_PROFILE,0);
+    }
+    private String getToken() {
+        SharedPreferences sharedPreferences = getSharedPreferences("myToken", Context.MODE_PRIVATE);
+        return sharedPreferences.getString(SAVE_TOKEN, "");
+    }
+    private void createReadeBook(AddFavorite addFavorite){
+        Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
+        ApiInterface apiInterface=retrofit.create(ApiInterface.class);
+        Call<AddFavorite> call=apiInterface.createReadBook(addFavorite);
+        call.enqueue(new Callback<AddFavorite>() {
+            @Override
+            public void onResponse(Call<AddFavorite> call, Response<AddFavorite> response) {
+                if(response.code()==201){
+                    Toast.makeText(mContext,"Книга добавлена в прочитанное",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddFavorite> call, Throwable t) {
+
             }
         });
+
     }
-
-
 }

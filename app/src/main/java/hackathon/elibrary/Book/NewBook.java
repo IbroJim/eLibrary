@@ -90,6 +90,7 @@ public class NewBook extends AppCompatActivity implements View.OnClickListener {
         progressBar=(ProgressBar) findViewById(R.id.progress_new_book);
         progressBar.setVisibility(View.INVISIBLE);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode==FILE_PICKER_REQUEST_CODE_PDF&&resultCode==RESULT_OK){
@@ -117,7 +118,7 @@ public class NewBook extends AppCompatActivity implements View.OnClickListener {
 
 
         }
-    private void takeProfileId() {
+        private void takeProfileId() {
         String token = getToken();
         Integer userId = getId();
         long longs = (long) (userId);
@@ -226,6 +227,8 @@ public class NewBook extends AppCompatActivity implements View.OnClickListener {
             }
         });
     }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

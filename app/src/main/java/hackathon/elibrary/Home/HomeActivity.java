@@ -2,6 +2,7 @@ package hackathon.elibrary.Home;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,6 +30,7 @@ import hackathon.elibrary.MyDataBase.DatabaseHelper;
 import hackathon.elibrary.MyDataBase.TranslateSchema;
 import hackathon.elibrary.MyDataBase.TranslateSchema.TranslateTable;
 import hackathon.elibrary.POJO.AccountData;
+import hackathon.elibrary.POJO.Profile;
 import hackathon.elibrary.POJO.Translate;
 import hackathon.elibrary.POJO.User;
 import hackathon.elibrary.R;
@@ -38,11 +40,10 @@ import hackathon.elibrary.Util.BottomNavigationSetupOptions;
 import hackathon.elibrary.Util.OkHttpHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class HomeActivity extends AppCompatActivity {
-
-    private Context mContext=HomeActivity.this;
 
 
     private static final int ACTIVITY_NUM=1;
@@ -50,9 +51,9 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG="HomeActivity";
     private static final String EXTRA_NAME="login";
     private static final String ACCOUNT_ID="MyAccountId";
-    private static final String token="ASDa";
+    private static final String SAVE_PROFILE = "profileID";
 
-
+    private Context mContext=HomeActivity.this;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,9 +62,6 @@ public class HomeActivity extends AppCompatActivity {
         setupNavigation();
         createFolder();
         getAccountId();
-
-
-
     }
     private void createFolder(){
         File folder=new File(Environment.getExternalStorageDirectory()+"/eLibrary");
@@ -85,7 +83,7 @@ public class HomeActivity extends AppCompatActivity {
         MenuItem menuItem=menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }
-    public  String getToken(){
+    private   String getToken(){
          SharedPreferences sharedPreferences=getSharedPreferences("myToken",Context.MODE_PRIVATE);
           return sharedPreferences.getString(SAVE_TOKEN,"");
     }
@@ -98,8 +96,11 @@ public class HomeActivity extends AppCompatActivity {
           @Override
           public void onResponse(Call<AccountData> call, retrofit2.Response<AccountData> response ) {
 
-              saveLogin(response.body().getLogin());
-              saveAccountId(response.body().getId());
+              if(response.code()==200) {
+                  saveLogin(response.body().getLogin());
+                  saveAccountId(response.body().getId());
+                  takeProfileId(response.body().getId());
+              }
           }
 
           @Override
@@ -120,6 +121,34 @@ public class HomeActivity extends AppCompatActivity {
      editorInt.putInt(ACCOUNT_ID,id);
      editorInt.apply();
  }
+    private void takeProfileId(Integer idAcc) {
+        Long longs = Long.parseLong(String.valueOf(idAcc));
+        Retrofit retrofit = OkHttpHelper.getRetrofitToken(getToken());
+        ApiInterface client = retrofit.create(ApiInterface.class);
+        Call<Profile> call = client.getProfileId(longs);
+        Log.d("NewBook", "Hello" + longs);
+        call.enqueue(new Callback<Profile>() {
+            @Override
+            public void onResponse(Call<Profile> call, Response<Profile> response) {
+                if(response.code()==200) {
+                    saveIdProfile(response.body().getId());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Profile> call, Throwable t) {
+
+            }
+        });
+
+    }
+    private void saveIdProfile(Integer id) {
+        SharedPreferences sharedPreferences = getSharedPreferences("profileId", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(SAVE_PROFILE, id);
+        editor.apply();
+
+    }
 
 
 

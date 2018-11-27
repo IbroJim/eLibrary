@@ -14,7 +14,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import hackathon.elibrary.MyDataBase.BookSchema.BookTable;
-import hackathon.elibrary.MyDataBase.TranslateSchema.TranslateTable;
+import hackathon.elibrary.POJO.Book;
+
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -112,11 +113,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL("create table "+BookTable.NAME_TABLE_TWO+"("+BookTable.NameOfFields.ID+" integer primary key,"
+        +BookTable.NameOfFields.ID_BOOK+" integer,"+BookTable.NameOfFields.FIRST_NAME+" text,"+BookTable.NameOfFields.LAST_NAME+" text,"+BookTable.NameOfFields.GENRE+" text,"
+        +BookTable.NameOfFields.PAGE+" integer,"+BookTable.NameOfFields.DATE_PIBLICATION+" integer,"+BookTable.NameOfFields.TITLE+" text,"+BookTable.NameOfFields.CREATED_BY+" text,"+BookTable.NameOfFields.DISCRIPTION+" text,"+
+                BookTable.NameOfFields.NAME_FILE+" text"+")");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("drop table if exists "+BookTable.NAME_TABLE_TWO);
+        onCreate(db);
+    }
 
+    public Cursor getInformation(SQLiteDatabase db){
+        String[] projection={BookTable.NameOfFields.ID,BookTable.NameOfFields.TITLE,BookTable.NameOfFields.FIRST_NAME,
+        BookTable.NameOfFields.LAST_NAME,BookTable.NameOfFields.GENRE};
+        Cursor cursor=db.query(BookTable.NAME_TABLE_TWO,projection,null,null,null,null,null);
+        return cursor;
     }
 }

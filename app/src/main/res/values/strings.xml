@@ -37,4 +37,5 @@
     <string name="book_date_publication">Год издания-%1$d </string>
     <string name="more_detailed">Подробнее</string>
     <string name="add_user">Добавлено %1$s </string>
+    <string name="read">Читать</string>
 </resources>

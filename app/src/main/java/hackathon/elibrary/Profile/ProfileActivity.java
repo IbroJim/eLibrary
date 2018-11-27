@@ -28,7 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
     private SectionPageAdapter sectionPageAdapter;
     private ViewPager mViewPager;
     private Context mContext=ProfileActivity.this;
-    private TextView textLogin;
+
 
     private static  final int ACTIVITY_NUM=3;
     private static  final String EXTRA_NAME="login";
@@ -40,18 +40,6 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         setupNavigation();
         setupViewProfile();
-        getShariedMylogin();
-
-        Button button=(Button) findViewById(R.id.add_book);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(mContext,DetailsBook.class);
-                startActivity(intent);
-            }
-        });
-
-
 
     }
     private void setupViewProfile(){
@@ -79,12 +67,6 @@ public class ProfileActivity extends AppCompatActivity {
         MenuItem menuItem=menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }
-    private void getShariedMylogin(){
-        SharedPreferences sharedPreferences=getSharedPreferences("myLogin",Context.MODE_PRIVATE);
-        String login=sharedPreferences.getString(EXTRA_NAME,"");
-        textLogin=(TextView) findViewById(R.id.name_user);
-        textLogin.setText(login);
 
-    }
 
 }

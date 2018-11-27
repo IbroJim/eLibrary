@@ -68,6 +68,8 @@ public class BookDetails {
     @SerializedName("profileId")
     private Object profileId;
 
+   // public BookDetails() {}
+
     @SerializedName("genreId")
     private Integer genreId;
 
@@ -80,6 +82,74 @@ public class BookDetails {
 
     public String getAuthorLastName() {
         return authorLastName;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPages(Integer pages) {
+        this.pages = pages;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
+    }
+
+    public void setPath(Object path) {
+        this.path = path;
+    }
+
+    public void setCoverPath(Object coverPath) {
+        this.coverPath = coverPath;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public void setLastModifiedDate(String lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public void setYearOfPublishing(Integer yearOfPublishing) {
+        this.yearOfPublishing = yearOfPublishing;
+    }
+
+    public void setAuthorFirstName(String authorFirstName) {
+        this.authorFirstName = authorFirstName;
+    }
+
+    public void setAuthorLastName(String authorLastName) {
+        this.authorLastName = authorLastName;
+    }
+
+    public void setProfileId(Object profileId) {
+        this.profileId = profileId;
+    }
+
+    public void setGenreId(Integer genreId) {
+        this.genreId = genreId;
+    }
+
+    public void setGenreName(String genreName) {
+        this.genreName = genreName;
     }
 
     public String getCreatedBy() {

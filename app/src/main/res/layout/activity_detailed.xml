@@ -13,6 +13,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
     <LinearLayout
+        android:layout_marginRight="5dp"
+        android:padding="5dp"
+        android:background="@drawable/shape_background"
         android:id="@+id/information"
         android:orientation="vertical"
         android:layout_marginTop="16dp"
@@ -60,17 +63,18 @@
             style="@style/MyTexViewDeatails"/>
     </LinearLayout>
     <com.like.LikeButton
-        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/cover_book_image"
         android:layout_below="@id/information"
         android:layout_marginTop="8dp"
         app:icon_type="heart"
         app:icon_size="25dp"
         android:id="@+id/hear_button"
         android:layout_width="40dp"
-        android:layout_height="40dp"/>
+        android:layout_height="40dp" />
     <Button
-        android:layout_marginLeft="16dp"
-        android:layout_below="@id/cover_book_image"
+        android:layout_marginTop="10dp"
+       android:layout_toRightOf="@id/hear_button"
+        android:layout_below="@id/information"
         android:id="@+id/download_books"
         android:textSize="12sp"
         android:text="@string/download"
@@ -103,4 +107,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     </LinearLayout>
+
+    <Button
+        android:layout_marginBottom="8dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/read_book"
+        android:textSize="10sp"
+        android:text="@string/read"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/login_button_background"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
 </RelativeLayout>

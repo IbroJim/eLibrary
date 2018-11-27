@@ -30,7 +30,6 @@ public class LoginActivity extends AppCompatActivity {
     private Context mContext=LoginActivity.this;
     private EditText editLogin,editPasswrod;
     private CheckBox remeberMe;
-    SharedPreferences sharedLogin,sharedPassword;
 
 
     private  static final String BASE_URL="https://elibrary-app.herokuapp.com/#/docs/";
@@ -44,28 +43,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setupView();
-        loadShared();
-        textView=(TextView) findViewById(R.id.create_account);
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setupChekBox();
-                Intent intent=new Intent(mContext, RegistryActivity.class);
-                startActivity(intent);
-            }
-        });
-        appCompatButton=(AppCompatButton) findViewById(R.id.login_in);
-                appCompatButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(editLogin.getText()!=null&&editPasswrod.getText()!=null) {
-                            LogIn logIn = new LogIn(editLogin.getText().toString(),
-                                    editPasswrod.getText().toString());
-                            logInProfile(logIn);
-                        }
-                    }
-                });
-            }
+        clickedListenner();
+        String token=getToken();
+        if(token!=null){
+            Intent intent=new Intent(mContext,HomeActivity.class);
+            startActivity(intent);
+        }
+    }
     private  void  setupView(){
              editLogin=(EditText) findViewById(R.id.login_in_login);
              editPasswrod=(EditText) findViewById(R.id.login_in_passwrod);
@@ -82,7 +66,6 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onResponse(Call<LogIn> call, Response<LogIn> response) {
             if (response.code()==200){
-                setupChekBox();
                 saveMyToken(response.body().getId_token());
                 Intent intent=new Intent(mContext,HomeActivity.class);
                 startActivity(intent);
@@ -94,36 +77,37 @@ public class LoginActivity extends AppCompatActivity {
         }
     });
 }
-    private void setupChekBox(){
-        if(remeberMe.isChecked()){
-       sharedLogin=getPreferences(MODE_PRIVATE);
-            SharedPreferences.Editor ed=sharedLogin.edit();
-            ed.putString(SAVE_LOGIN, editLogin.getText().toString());
-            ed.apply();
-
-       sharedPassword=getPreferences(MODE_PRIVATE);
-            SharedPreferences.Editor ep=sharedLogin.edit();
-            ep.putString(SAVE_PASSWORD,editPasswrod.getText().toString());
-            ep.apply();
-        }
-}
-    private void loadShared(){
-        sharedLogin=getPreferences(MODE_PRIVATE);
-        String login=sharedLogin.getString(SAVE_LOGIN,"");
-        if(login!=null){
-            editLogin.setText(login);
-        }
-        sharedPassword=getPreferences(MODE_PRIVATE);
-        String password=sharedPassword.getString(SAVE_PASSWORD,"");
-        if(password!=null){
-            editPasswrod.setText(password);
-        }
-}
     private void saveMyToken(String nameToken){
         SharedPreferences sharedPreferences=getSharedPreferences("myToken",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putString(SAVE_TOKEN,nameToken);
         editor.apply();
 }
+    private void clickedListenner(){
+        textView=(TextView) findViewById(R.id.create_account);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, RegistryActivity.class);
+                startActivity(intent);
+            }
+        });
+        appCompatButton=(AppCompatButton) findViewById(R.id.login_in);
+        appCompatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(editLogin.getText()!=null&&editPasswrod.getText()!=null) {
+                    LogIn logIn = new LogIn(editLogin.getText().toString(),
+                            editPasswrod.getText().toString());
+                    logInProfile(logIn);
+                }
+            }
+        });
+    }
+    private String getToken(){
+        SharedPreferences sharedPreferences=getSharedPreferences("myToken",Context.MODE_PRIVATE);
+        return sharedPreferences.getString(SAVE_TOKEN,null);
+    }
+
 
 }

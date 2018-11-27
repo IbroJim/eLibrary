@@ -105,7 +105,6 @@ public class SearchActivty extends AppCompatActivity {
                 Intent intent=new Intent(mContext,DetailsBook.class);
                 intent.putExtra(ID_BOOK,id);
                 startActivity(intent);
-
             }
 
             @Override
@@ -118,5 +117,6 @@ public class SearchActivty extends AppCompatActivity {
         progressBar=(ProgressBar) findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.VISIBLE);
     }
+
 
 }

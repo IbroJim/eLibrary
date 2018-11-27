@@ -2,10 +2,12 @@ package hackathon.elibrary.Reader;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +21,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.barteksc.pdfviewer.PDFView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import java.io.File;
 import java.io.IOException;
 
 import hackathon.elibrary.MyDataBase.DatabaseHelper;
@@ -32,6 +36,7 @@ public class ReaderActivity extends AppCompatActivity {
 
     private Context mContext=ReaderActivity.this;
     private static final int ACTIVITY_NUM=4;
+    private static final String NAME_FILE_PDF = "namePdfFile";
 
 
     private EditText editWord;
@@ -46,6 +51,7 @@ public class ReaderActivity extends AppCompatActivity {
         setupNavigation();
         createDataBase();
         setupView();
+        setupPdfView();
     }
     private void createDataBase(){
         myDbHelper = new DatabaseHelper(this);
@@ -96,22 +102,18 @@ public class ReaderActivity extends AppCompatActivity {
           }
       });
     }
-
     private void getWord(String word){
-        String valueString=null;
        Cursor cursor=myDbHelper.query("MyTranslateTable",new String[]{"value","name"},"name=?",
                 new String[]{word},null,null,null);
         if(cursor.moveToFirst()){
             int column=cursor.getColumnIndex("value");
             do {
-
               translateWord.setText(cursor.getString(column));
             }while (cursor.moveToNext());
        }else {
              translateWord.setText("Невозможно перевести");
         }
     }
-
     private void setupAlertDialog(){
         AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
         View view=getLayoutInflater().inflate(R.layout.alert_translate_dialog,null);
@@ -120,6 +122,14 @@ public class ReaderActivity extends AppCompatActivity {
         builder.setView(view);
         AlertDialog alertDialog=builder.create();
         alertDialog.show();
+    }
+    private void setupPdfView(){
+        Intent intent=getIntent();
+        String nameFile=intent.getStringExtra(NAME_FILE_PDF);
+        PDFView pdfView=(PDFView) findViewById(R.id.reader_pdf);
+        String  path=Environment.getExternalStorageDirectory().getAbsolutePath()+"/eLibrary";
+        File file=new File(path,nameFile);
+        pdfView.fromFile(file).load();
     }
 
 }

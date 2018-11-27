@@ -6,6 +6,7 @@ import java.util.List;
 import hackathon.elibrary.POJO.AddFavorite;
 import hackathon.elibrary.POJO.Book;
 import hackathon.elibrary.POJO.BookDetails;
+import hackathon.elibrary.POJO.FavoriteBook;
 import hackathon.elibrary.POJO.LogIn;
 import hackathon.elibrary.POJO.User;
 import hackathon.elibrary.POJO.AccountData;
@@ -46,6 +47,7 @@ public interface ApiInterface {
     @POST("api/books")
     Call<CreateBook> createBook(@Body CreateBook createBook);
 
+
     @Multipart
     @POST("api/books/upload")
     Call<ResponseBody> uploadBookFile(@Part ("file\"; filename=\"pp.pdf\" ") RequestBody file,
@@ -77,5 +79,12 @@ public interface ApiInterface {
 
   @GET("api/books/downloadCover/{bookId}")
     Call<ResponseBody>  downloadCover(@Path("bookId")long bookId);
+
+  @GET("api/favorite-books")
+    Call<ArrayList<FavoriteBook>> getAllFavoriteBook();
+
+  @GET("api/read-books")
+    Call<ArrayList<FavoriteBook>> getAllreadBooks();
+
 
 }

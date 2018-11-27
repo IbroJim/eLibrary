@@ -68,10 +68,17 @@
        tools:targetApi="lollipop" />
     </RelativeLayout>
     <android.support.v7.widget.RecyclerView
- style="@style/MyVerticalLisr"
+        style="@style/MyVerticalLisr"
+        android:id="@+id/recycler_view"
         android:layout_below="@id/search_layout"
        >
     </android.support.v7.widget.RecyclerView>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
 
     <include layout="@layout/bottom_navigation_layout"/>
 </RelativeLayout>

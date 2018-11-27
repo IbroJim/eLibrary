@@ -35,6 +35,7 @@ import hackathon.elibrary.MyDataBase.DatabaseHelper;
 import hackathon.elibrary.POJO.AddFavorite;
 import hackathon.elibrary.POJO.BookDetails;
 import hackathon.elibrary.R;
+import hackathon.elibrary.Reader.ReaderActivity;
 import hackathon.elibrary.Util.ApiInterface;
 import hackathon.elibrary.Util.OkHttpHelper;
 import okhttp3.Interceptor;
@@ -47,13 +48,14 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DetailsBook extends AppCompatActivity  {
+public class DetailsBook extends AppCompatActivity implements View.OnClickListener {
 
     private static final String SAVE_TOKEN = "saveToken";
     private static final String BASE_URL="https://elibrary-app.herokuapp.com/#/docs/";
     private static final String ID_BOOK = "idBook";
     private static final String TAG = "DetailsBook";
     private static final String SAVE_PROFILE = "profileID";
+    private static final String NAME_FILE_PDF = "namePdfFile";
 
 
     private Button downlaodBookButton;
@@ -67,17 +69,18 @@ public class DetailsBook extends AppCompatActivity  {
     private SQLiteDatabase sqLiteDatabase;
     private ContentValues contentValues;
     private BookDetails bookDetails;
+    private Button buttonRead;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("Details","Hello world");
         setContentView(R.layout.activity_detailed);
         setupView();
         clickListenner();
         getBook();
         setupDatabase();
+        checkBookDownload();
     }
     private void setupView(){
         txtNameBook=(TextView) findViewById(R.id.name_book);
@@ -90,6 +93,11 @@ public class DetailsBook extends AppCompatActivity  {
         downlaodBookButton=(Button) findViewById(R.id.download_books);
         txtCreatedBy=(TextView) findViewById(R.id.created_by);
         imageCover=(ImageView) findViewById(R.id.cover_book_image);
+        buttonRead=(Button) findViewById(R.id.read_book);
+        addFavoritesBook=(LikeButton) findViewById(R.id.hear_button);
+        buttonRead.setVisibility(View.INVISIBLE);
+        buttonRead.setOnClickListener(this);
+        downlaodBookButton.setOnClickListener(this);
     }
     private void downloadBook(){
         OkHttpClient.Builder httpClient=new OkHttpClient.Builder();
@@ -116,8 +124,11 @@ public class DetailsBook extends AppCompatActivity  {
                 if (response.code() == 200) {
                     assert response.body() != null;
                     boolean succes = writeResponceBodyToDisk(nameFile, response.body());
-                    Log.d("Details", "is " + succes);
                     downloadInformation(nameFile);
+                    Log.d("Details","is "+succes);
+                    if(succes==true){
+                        buttonRead.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -264,7 +275,7 @@ public class DetailsBook extends AppCompatActivity  {
             });
     }
     private void clickListenner(){
-        downlaodBookButton.setOnClickListener(new View.OnClickListener() {
+     /**   downlaodBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("Details","Enter");
@@ -272,14 +283,15 @@ public class DetailsBook extends AppCompatActivity  {
                         new String[]{String.valueOf(getIdBook())},null,null,null,null);
                 if(cursor.moveToFirst()){
                     do{
+                        buttonRead.setVisibility(View.VISIBLE);
                         Toast.makeText(mContext,"Эта книга уже скачена",Toast.LENGTH_SHORT).show();
                     }while (cursor.moveToNext());
                 }else {  downloadBook();}
 
             }
-        });
+        });**/
         final Integer id=Integer.parseInt(String.valueOf(getIdBook()));
-        addFavoritesBook=(LikeButton) findViewById(R.id.hear_button);
+
         addFavoritesBook.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
@@ -292,6 +304,7 @@ public class DetailsBook extends AppCompatActivity  {
                 deleteFavoriteBook(idFavorite);
             }
         });
+
     }
     private void downloadCover(){
             Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
@@ -372,5 +385,39 @@ public class DetailsBook extends AppCompatActivity  {
         SharedPreferences sharedPreferences=getSharedPreferences("profileId",Context.MODE_PRIVATE);
         return sharedPreferences.getInt(SAVE_PROFILE,0);
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.download_books:
+                Log.d("Details","Enter");
+                Cursor cursor=sqLiteDatabase.query(BookTable.NAME_TABLE_TWO,new String[]{BookTable.NameOfFields.ID_BOOK},"idBook=?",
+                        new String[]{String.valueOf(getIdBook())},null,null,null,null);
+                if(cursor.moveToFirst()){
+                    do{
+                        buttonRead.setVisibility(View.VISIBLE);
+                        Toast.makeText(mContext,"Эта книга уже скачена",Toast.LENGTH_SHORT).show();
+                    }while (cursor.moveToNext());
+                }else {  downloadBook();}
+                break;
+            case R.id.read_book:
+                Intent intent=new Intent(mContext,ReaderActivity.class);
+                intent.putExtra(NAME_FILE_PDF,nameFile);
+                startActivity(intent);
+                break;
+        }
     }
+    private void checkBookDownload(){
+        Log.d("Details","Enter");
+        Cursor cursor=sqLiteDatabase.query(BookTable.NAME_TABLE_TWO,new String[]{BookTable.NameOfFields.ID_BOOK},"idBook=?",
+                new String[]{String.valueOf(getIdBook())},null,null,null,null);
+        if(cursor.moveToFirst()){
+            do{
+                buttonRead.setVisibility(View.VISIBLE);
+                Toast.makeText(mContext,"Эта книга уже скачена",Toast.LENGTH_SHORT).show();
+            }while (cursor.moveToNext());
+        }else {
+        }
+    }
+}
 

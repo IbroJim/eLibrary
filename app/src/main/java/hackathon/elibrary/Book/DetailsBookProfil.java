@@ -46,7 +46,6 @@ public class DetailsBookProfil extends AppCompatActivity {
         setupView();
         setupDataView();
         clickListenner();
-
     }
     private void  setupDatabase(){
         databaseHelper=new DatabaseHelper(mContext);

@@ -31,7 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     private static  final int ACTIVITY_NUM=3;
-    private static  final String EXTRA_NAME="login";
+
 
 
     @Override

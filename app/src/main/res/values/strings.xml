@@ -38,4 +38,5 @@
     <string name="more_detailed">Подробнее</string>
     <string name="add_user">Добавлено %1$s </string>
     <string name="read">Читать</string>
+    <string name="add_to_read">Добавить в прочитанное</string>
 </resources>

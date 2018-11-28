@@ -1,5 +1,7 @@
 package hackathon.elibrary.Util;
 
+import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import hackathon.elibrary.POJO.Favorite;
 import hackathon.elibrary.POJO.Book;
 import hackathon.elibrary.POJO.BookDetails;
 import hackathon.elibrary.POJO.FavoriteBook;
+import hackathon.elibrary.POJO.HelpBook;
 import hackathon.elibrary.POJO.LogIn;
 import hackathon.elibrary.POJO.User;
 import hackathon.elibrary.POJO.AccountData;
@@ -96,5 +99,11 @@ public interface ApiInterface {
     Call<ArrayList<Book>> getBookFiltrGenre(@Query("approved.equals") boolean approved,
                                             @Query("genreId.equals")long genre);
 
+  @GET("api/favorite-books/top")
+    Call<ArrayList<Book>> getTopBooks(@Query("approved.equals") boolean approved);
+
+  @GET("api/books")
+    Call<ArrayList<HelpBook>> getNewBook(@Query("approved.equals") boolean approved,
+                                         @Query("createdDate.greaterThan")Instant zonedDateTime);
 
 }

@@ -19,34 +19,57 @@
         android:layout_marginBottom="50dp"
         android:weightSum="100"
         android:orientation="vertical">
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="50"
-            android:orientation="vertical">
+          >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
             <TextView
                 android:id="@+id/read_data"
              style="@style/MyNameList"
                 android:text="@string/new_book"/>
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/new_books_recycler"
                style="@style/MyHorizantalList" >
             </android.support.v7.widget.RecyclerView>
-        </LinearLayout>
-        <LinearLayout
+            </LinearLayout>
+            <ProgressBar
+                android:layout_centerInParent="true"
+                android:id="@+id/progress_new_book"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+        </RelativeLayout>
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="50"
-            android:orientation="vertical">
+            android:layout_weight="50">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
             <TextView
                 android:id="@+id/title_database"
               style="@style/MyNameList"
-                android:text="Актуальное"/>
+                android:text="@string/popular"/>
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/popular_recycler"
                 style="@style/MyHorizantalList" >
             </android.support.v7.widget.RecyclerView>
-        </LinearLayout>
+            </LinearLayout>
+            <ProgressBar
+                android:layout_centerInParent="true"
+                android:id="@+id/progress_popular"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+        </RelativeLayout>
+
 
     </LinearLayout>
+
 
     <include layout="@layout/bottom_navigation_layout"/>
 </RelativeLayout>

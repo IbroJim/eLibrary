@@ -2,7 +2,7 @@
 <RelativeLayout
     android:layout_marginRight="8dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="50dp"
+    android:layout_width="70dp"
     android:layout_height="60dp">
     <ImageView
         android:layout_centerHorizontal="true"
@@ -16,7 +16,7 @@
         android:gravity="center"
         android:layout_below="@id/genre_image"
         android:textColor="@color/colorBlack"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 </RelativeLayout>

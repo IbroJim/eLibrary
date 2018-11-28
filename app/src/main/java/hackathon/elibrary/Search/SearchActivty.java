@@ -60,7 +60,7 @@ public class SearchActivty extends AppCompatActivity {
     private ProgressBar progressBar;
     private SearchView searchView;
     private ArrayList<Book> arrayListBook;
-    private int chekQuery;
+
 
 
 

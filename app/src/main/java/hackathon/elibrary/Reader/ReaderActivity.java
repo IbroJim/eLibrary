@@ -3,6 +3,7 @@ package hackathon.elibrary.Reader;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -37,11 +38,13 @@ public class ReaderActivity extends AppCompatActivity {
     private Context mContext=ReaderActivity.this;
     private static final int ACTIVITY_NUM=4;
     private static final String NAME_FILE_PDF = "namePdfFile";
+    private static final String SAVE_LAST_BOOK="saveLastBook";
 
 
     private EditText editWord;
     private TextView  translateWord;
     private DatabaseHelper myDbHelper;
+    private PDFView pdfView;
 
 
     @Override
@@ -49,9 +52,10 @@ public class ReaderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader);
         setupNavigation();
-        createDataBase();
         setupView();
+        chekedLastBook();
         setupPdfView();
+        createDataBase();
     }
     private void createDataBase(){
         myDbHelper = new DatabaseHelper(this);
@@ -76,6 +80,7 @@ public class ReaderActivity extends AppCompatActivity {
         menuItem.setChecked(true);
     }
     private void setupView() {
+        pdfView= (PDFView) findViewById(R.id.reader_pdf);
         editWord = (EditText) findViewById(R.id.edit_word);
         editWord.addTextChangedListener(new TextWatcher() {
             @Override
@@ -125,12 +130,33 @@ public class ReaderActivity extends AppCompatActivity {
     }
     private void setupPdfView(){
         Intent intent=getIntent();
-        String nameFile=intent.getStringExtra(NAME_FILE_PDF);
-        PDFView pdfView=(PDFView) findViewById(R.id.reader_pdf);
-        String  path=Environment.getExternalStorageDirectory().getAbsolutePath()+"/eLibrary";
-        File file=new File(path,nameFile);
-        pdfView.fromFile(file).load();
+        String nameFile = intent.getStringExtra(NAME_FILE_PDF);
+            if(nameFile!=null) {
+                saveLastBook(nameFile);
+                String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/eLibrary";
+                File file = new File(path, nameFile);
+                pdfView.fromFile(file).load();
+            }
+
+    }
+    private void saveLastBook(String nameBook){
+        SharedPreferences sharedPreferences=getSharedPreferences("saveLastBook",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString(SAVE_LAST_BOOK,nameBook);
+        editor.apply();
+    }
+    private void chekedLastBook(){
+        String nameFile=getLastBook();
+        if(nameFile!=null){
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/eLibrary";
+            File file = new File(path, nameFile);
+            pdfView.fromFile(file).load();
+        }
+
+    }
+    private String getLastBook(){
+        SharedPreferences sharedPreferences=getSharedPreferences("saveLastBook",Context.MODE_PRIVATE);
+        return sharedPreferences.getString(SAVE_LAST_BOOK,null);
     }
 
 }
-

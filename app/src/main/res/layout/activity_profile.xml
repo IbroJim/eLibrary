@@ -20,12 +20,6 @@
                 android:textColor="@color/colorWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/add_book"
-                android:layout_alignParentRight="true"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/ic_add_book"/>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
     <RelativeLayout
@@ -56,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/image_profile" />
         <LinearLayout
+            android:id="@+id/full_name"
             android:layout_toRightOf="@+id/image_profile"
             android:layout_below="@id/login_user"
             android:orientation="horizontal"
@@ -63,7 +58,7 @@
             android:layout_marginLeft="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/image_profile" />
+            android:layout_toEndOf="@+id/image_profile" >
         <TextView
             android:id="@+id/name_user"
             android:layout_width="wrap_content"
@@ -72,6 +67,27 @@
             android:id="@+id/last_name_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/create_book"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="6dp"
+            android:layout_below="@id/full_name"
+            android:layout_toRightOf="@+id/image_profile"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/image_profile">
+            <ImageView
+                android:src="@drawable/ic_create_book"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginLeft="2dp"
+                android:text="@string/create_book"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </RelativeLayout>
 
 

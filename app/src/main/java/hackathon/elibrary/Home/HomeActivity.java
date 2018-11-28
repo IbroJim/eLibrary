@@ -49,7 +49,6 @@ public class HomeActivity extends AppCompatActivity {
     private static final int ACTIVITY_NUM=1;
     private static final String SAVE_TOKEN="saveToken";
     private static final String TAG="HomeActivity";
-    private static final String EXTRA_NAME="login";
     private static final String ACCOUNT_ID="MyAccountId";
     private static final String SAVE_PROFILE = "profileID";
 
@@ -97,7 +96,6 @@ public class HomeActivity extends AppCompatActivity {
           public void onResponse(Call<AccountData> call, retrofit2.Response<AccountData> response ) {
 
               if(response.code()==200) {
-                  saveLogin(response.body().getLogin());
                   saveAccountId(response.body().getId());
                   takeProfileId(response.body().getId());
               }
@@ -109,12 +107,6 @@ public class HomeActivity extends AppCompatActivity {
           }
       });
   }
-    private void saveLogin(String login){
-        SharedPreferences sharedPreferences=getSharedPreferences("myLogin",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        editor.putString(EXTRA_NAME,login);
-        editor.apply();
- }
     private void saveAccountId(Integer id){
      SharedPreferences sharedPreferences1=getSharedPreferences("myAccountId",Context.MODE_PRIVATE);
      SharedPreferences.Editor editorInt=sharedPreferences1.edit();

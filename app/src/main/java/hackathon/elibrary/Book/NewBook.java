@@ -67,7 +67,7 @@ public class NewBook extends AppCompatActivity implements View.OnClickListener {
         takeProfileId();
         getAllGenre();
         setupView();
-     token=getToken();
+       token=getToken();
     }
     private void setupView() {
         selectFile=(Button)findViewById(R.id.select_pdf);
@@ -118,7 +118,7 @@ public class NewBook extends AppCompatActivity implements View.OnClickListener {
 
 
         }
-        private void takeProfileId() {
+    private void takeProfileId() {
         String token = getToken();
         Integer userId = getId();
         long longs = (long) (userId);
@@ -227,8 +227,6 @@ public class NewBook extends AppCompatActivity implements View.OnClickListener {
             }
         });
     }
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

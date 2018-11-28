@@ -16,10 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import hackathon.elibrary.MyDataBase.BookSchema;
 import hackathon.elibrary.MyDataBase.BookSchema.BookTable;
 import hackathon.elibrary.MyDataBase.DatabaseHelper;
-import hackathon.elibrary.POJO.AddFavorite;
+import hackathon.elibrary.POJO.Favorite;
 import hackathon.elibrary.R;
 import hackathon.elibrary.Reader.ReaderActivity;
 import hackathon.elibrary.Util.ApiInterface;
@@ -129,7 +128,7 @@ public class DetailsBookProfil extends AppCompatActivity implements View.OnClick
                 startActivity(intent);
                 break;
             case R.id.add_read:
-                AddFavorite addFavorite=new AddFavorite(idBook,getProfileId());
+                Favorite addFavorite=new Favorite(idBook,getProfileId());
                 createReadeBook(addFavorite);
                 break;
         }
@@ -142,20 +141,20 @@ public class DetailsBookProfil extends AppCompatActivity implements View.OnClick
         SharedPreferences sharedPreferences = getSharedPreferences("myToken", Context.MODE_PRIVATE);
         return sharedPreferences.getString(SAVE_TOKEN, "");
     }
-    private void createReadeBook(AddFavorite addFavorite){
+    private void createReadeBook(Favorite addFavorite){
         Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
         ApiInterface apiInterface=retrofit.create(ApiInterface.class);
-        Call<AddFavorite> call=apiInterface.createReadBook(addFavorite);
-        call.enqueue(new Callback<AddFavorite>() {
+        Call<Favorite> call=apiInterface.createReadBook(addFavorite);
+        call.enqueue(new Callback<Favorite>() {
             @Override
-            public void onResponse(Call<AddFavorite> call, Response<AddFavorite> response) {
+            public void onResponse(Call<Favorite> call, Response<Favorite> response) {
                 if(response.code()==201){
                     Toast.makeText(mContext,"Книга добавлена в прочитанное",Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<AddFavorite> call, Throwable t) {
+            public void onFailure(Call<Favorite> call, Throwable t) {
 
             }
         });

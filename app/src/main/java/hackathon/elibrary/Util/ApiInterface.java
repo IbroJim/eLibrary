@@ -3,7 +3,7 @@ package hackathon.elibrary.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-import hackathon.elibrary.POJO.AddFavorite;
+import hackathon.elibrary.POJO.Favorite;
 import hackathon.elibrary.POJO.Book;
 import hackathon.elibrary.POJO.BookDetails;
 import hackathon.elibrary.POJO.FavoriteBook;
@@ -64,13 +64,13 @@ public interface ApiInterface {
     Call<ResponseBody> downLoadBook(@Path ("id") long id);
 
   @GET("api/books/")
-    Call<ArrayList<Book>> getAllBooks();
+    Call<ArrayList<Book>> getAllBooks(@Query("approved.equals") boolean approved);
 
   @GET("api/books/{id}")
     Call<BookDetails> getBook(@Path("id") long id);
 
   @POST("api/favorite-books")
-    Call<AddFavorite> createFavoriteBook(@Body AddFavorite addFavorite);
+    Call<Favorite> createFavoriteBook(@Body Favorite addFavorite);
 
 
   @DELETE("api/favorite-books/{id}")
@@ -87,7 +87,14 @@ public interface ApiInterface {
     Call<ArrayList<FavoriteBook>> getAllreadBooks();
 
   @POST("api/read-books")
-    Call<AddFavorite> createReadBook(@Body AddFavorite addFavorite);
+    Call<Favorite> createReadBook(@Body Favorite addFavorite);
+
+  @GET("api/favorite-books")
+    Call<ArrayList<FavoriteBook>> checkFavoriteBook(@Query("bookId.equals") long bookId,
+                                         @Query("profileId.equals") long profileId);
+  @GET("api/books/")
+    Call<ArrayList<Book>> getBookFiltrGenre(@Query("approved.equals") boolean approved,
+                                            @Query("genreId.equals")long genre);
 
 
 }

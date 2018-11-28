@@ -29,11 +29,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import hackathon.elibrary.MyDataBase.BookSchema.BookTable;
 import hackathon.elibrary.MyDataBase.DatabaseHelper;
-import hackathon.elibrary.POJO.AddFavorite;
+import hackathon.elibrary.POJO.Favorite;
 import hackathon.elibrary.POJO.BookDetails;
+import hackathon.elibrary.POJO.FavoriteBook;
 import hackathon.elibrary.R;
 import hackathon.elibrary.Reader.ReaderActivity;
 import hackathon.elibrary.Util.ApiInterface;
@@ -81,6 +84,7 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
         getBook();
         setupDatabase();
         checkBookDownload();
+
     }
     private void setupView(){
         txtNameBook=(TextView) findViewById(R.id.name_book);
@@ -187,7 +191,6 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
     private long getIdBook(){
         Intent intent=getIntent();
         int idBook=intent.getIntExtra(ID_BOOK,0);
-        Toast.makeText(mContext,"id"+idBook,Toast.LENGTH_SHORT).show();
         Long id=Long.parseLong(String.valueOf(idBook));
         return id;
     }
@@ -200,7 +203,7 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
             public void onResponse(Call<BookDetails> call, retrofit2.Response<BookDetails> response) {
                    if(response.code()==200){
                        bookDetails = new BookDetails();
-                              bookDetails.setId(response.body().getId());
+                               bookDetails.setId(response.body().getId());
                                bookDetails.setTitle(response.body().getTitle());
                                bookDetails.setDescription(response.body().getDescription());
                                bookDetails.setPages(response.body().getPages());
@@ -211,6 +214,8 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
                                bookDetails.setGenreName(response.body().getGenreName());
                                downloadCover();
                                setBookInformation();
+                               chekedFavorite(response.body().getId());
+
                    }
             }
 
@@ -236,14 +241,13 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
 
 
     }
-    private void createFavoriteBook(AddFavorite addFavorite){
+    private void createFavoriteBook(Favorite addFavorite){
         Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
         ApiInterface apiInterface=retrofit.create(ApiInterface.class);
-        Call<AddFavorite> call=apiInterface.createFavoriteBook(addFavorite);
-        call.enqueue(new Callback<AddFavorite>() {
+        Call<Favorite> call=apiInterface.createFavoriteBook(addFavorite);
+        call.enqueue(new Callback<Favorite>() {
             @Override
-            public void onResponse(Call<AddFavorite> call, retrofit2.Response<AddFavorite> response) {
-                Toast.makeText(mContext,"responce code "+response.code(),Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<Favorite> call, retrofit2.Response<Favorite> response) {
                 if(response.code()==201){
                     Toast.makeText(mContext,"Книга добавлена в избранное ",Toast.LENGTH_SHORT).show();
                     idFavorite=response.body().getId();
@@ -251,7 +255,7 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
             }
 
             @Override
-            public void onFailure(Call<AddFavorite> call, Throwable t) {
+            public void onFailure(Call<Favorite> call, Throwable t) {
                   Toast.makeText(mContext,"Произошла ошибка",Toast.LENGTH_SHORT).show();
             }
         });
@@ -281,7 +285,7 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
         addFavoritesBook.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
-                AddFavorite addFavorite=new AddFavorite(id,getProfileId());
+                Favorite addFavorite=new Favorite(id,getProfileId());
                 createFavoriteBook(addFavorite);
             }
 
@@ -403,6 +407,28 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
             }while (cursor.moveToNext());
         }else {
         }
+    }
+    private void chekedFavorite(Integer idBook){
+        Integer  idProfile=getProfileId();
+        long idLongProfile=Long.parseLong(String.valueOf(idProfile));
+        long idLongBook=Long.parseLong(String.valueOf(idBook));
+        Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
+        ApiInterface apiInterface=retrofit.create(ApiInterface.class);
+        Call<ArrayList<FavoriteBook>> call=apiInterface.checkFavoriteBook(idLongBook,idLongProfile);
+        call.enqueue(new Callback<ArrayList<FavoriteBook>>() {
+            @Override
+            public void onResponse(Call<ArrayList<FavoriteBook>> call, retrofit2.Response<ArrayList<FavoriteBook>> response) {
+                Toast.makeText(mContext,"responce"+response.code(),Toast.LENGTH_SHORT).show();
+                if(response.code()==200){
+                    addFavoritesBook.setLiked(true);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<FavoriteBook>> call, Throwable t) {
+                 Toast.makeText(mContext,"Fail",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
 

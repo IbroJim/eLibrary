@@ -24,11 +24,13 @@ import java.util.List;
 
 import hackathon.elibrary.Book.DetailsBook;
 import hackathon.elibrary.POJO.Book;
+import hackathon.elibrary.POJO.Genre;
 import hackathon.elibrary.R;
 import hackathon.elibrary.Reader.ReaderActivity;
 import hackathon.elibrary.Util.ApiInterface;
 import hackathon.elibrary.Util.BookRecyclerAdapter;
 import hackathon.elibrary.Util.BottomNavigationSetupOptions;
+import hackathon.elibrary.Util.GenreRecyclerAdapter;
 import hackathon.elibrary.Util.OkHttpHelper;
 import hackathon.elibrary.Util.RecyclerItemClickListener;
 import retrofit2.Call;
@@ -44,8 +46,9 @@ public class SearchActivty extends AppCompatActivity {
 
 
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView,recyclerGenre;
     private BookRecyclerAdapter bookRecyclerAdapter;
+    private GenreRecyclerAdapter genreRecyclerAdapter;
     private Context mContext=SearchActivty.this;
     private ProgressBar progressBar;
 
@@ -56,10 +59,9 @@ public class SearchActivty extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         setupNavigation();
+        getAllGenre();
         getAllBooks();
         setupView();
-
-
     }
     private void setupNavigation(){
         BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.bottom_navigatiom_view_id);
@@ -72,7 +74,7 @@ public class SearchActivty extends AppCompatActivity {
     private void getAllBooks(){
         Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
         ApiInterface apiInterface=retrofit.create(ApiInterface.class);
-        Call<ArrayList<Book>> call=apiInterface.getAllBooks();
+        Call<ArrayList<Book>> call=apiInterface.getAllBooks(true);
         call.enqueue(new Callback<ArrayList<Book>>() {
             @Override
             public void onResponse(Call<ArrayList<Book>> call, Response<ArrayList<Book>> response) {
@@ -84,6 +86,24 @@ public class SearchActivty extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ArrayList<Book>> call, Throwable t) {
+
+            }
+        });
+    }
+    private void getAllGenre(){
+        Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
+        ApiInterface apiInterface=retrofit.create(ApiInterface.class);
+        Call<List<Genre>> call=apiInterface.getAllGenre();
+        call.enqueue(new Callback<List<Genre>>() {
+            @Override
+            public void onResponse(Call<List<Genre>> call, Response<List<Genre>> response) {
+                if(response.code()==200){
+                    setupGenreRecycler(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Genre>> call, Throwable t) {
 
             }
         });
@@ -116,6 +136,53 @@ public class SearchActivty extends AppCompatActivity {
     private void setupView(){
         progressBar=(ProgressBar) findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.VISIBLE);
+    }
+    private void setupGenreRecycler(final List<Genre> genreList){
+      recyclerGenre=(RecyclerView) findViewById(R.id.genre_recycler);
+      genreRecyclerAdapter=new GenreRecyclerAdapter(genreList,mContext);
+      RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false);
+      recyclerGenre.setLayoutManager(layoutManager);
+      recyclerGenre.setAdapter(genreRecyclerAdapter);
+      recyclerGenre.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerGenre, new RecyclerItemClickListener.OnItemClickListener() {
+          @Override
+          public void onItemClick(View view, int position) {
+               if(genreList.get(position).getId()==1851){
+                   getAllBooks();
+                   progressBar.setVisibility(View.VISIBLE);
+                   Toast.makeText(mContext,"Все книги",Toast.LENGTH_SHORT).show();
+               }else{
+                   getBookGenre(genreList.get(position).getId());
+                   progressBar.setVisibility(View.VISIBLE);
+                   Toast.makeText(mContext,"Выбран жанр-"+genreList.get(position).getName(),Toast.LENGTH_SHORT).show();
+               }
+          }
+
+          @Override
+          public void onLongItemClick(View view, int position) {
+
+          }
+      }));
+
+    }
+    private void getBookGenre(Integer id){
+        long idLong=Long.parseLong(String.valueOf(id));
+        Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
+        ApiInterface apiInterface=retrofit.create(ApiInterface.class);
+        Call<ArrayList<Book>> call=apiInterface.getBookFiltrGenre(true,idLong);
+        call.enqueue(new Callback<ArrayList<Book>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Book>> call, Response<ArrayList<Book>> response) {
+                if(response.code()==200) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    setupRecyclerView(response.body(), mContext);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Book>> call, Throwable t) {
+
+            }
+        });
     }
 
 

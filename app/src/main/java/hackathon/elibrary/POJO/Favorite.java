@@ -2,7 +2,7 @@ package hackathon.elibrary.POJO;
 
 import com.google.gson.annotations.SerializedName;
 
-public class AddFavorite {
+public class Favorite {
 
     @SerializedName("bookId")
     private Integer bookId;
@@ -13,7 +13,7 @@ public class AddFavorite {
     @SerializedName("profileId")
     private Integer profileId;
 
-    public AddFavorite(Integer bookId, Integer profileId) {
+    public Favorite(Integer bookId, Integer profileId) {
         this.bookId = bookId;
         this.profileId = profileId;
     }

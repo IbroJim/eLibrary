@@ -15,8 +15,10 @@ import android.widget.Toast;
 
 import hackathon.elibrary.Home.HomeActivity;
 import hackathon.elibrary.POJO.LogIn;
+import hackathon.elibrary.POJO.Profile;
 import hackathon.elibrary.R;
 import hackathon.elibrary.Util.ApiInterface;
+import hackathon.elibrary.Util.OkHttpHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,18 +27,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
+
+    private  static final String BASE_URL="https://elibrary-app.herokuapp.com/#/docs/";
+    private  final String SAVE_TOKEN="saveToken";
+    private static final String ACCOUNT_ID="MyAccountId";
+
     private AppCompatButton appCompatButton;
     private TextView textView;
     private Context mContext=LoginActivity.this;
     private EditText editLogin,editPasswrod;
     private CheckBox remeberMe;
-
-
-    private  static final String BASE_URL="https://elibrary-app.herokuapp.com/#/docs/";
-    private  final  String SAVE_LOGIN="save_login";
-    private  final   String SAVE_PASSWORD="save_password";
-    private  final String SAVE_TOKEN="saveToken";
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences=getSharedPreferences("myToken",Context.MODE_PRIVATE);
         return sharedPreferences.getString(SAVE_TOKEN,null);
     }
+
 
 
 }

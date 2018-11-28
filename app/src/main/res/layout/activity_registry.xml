@@ -66,6 +66,7 @@
     <android.support.design.widget.TextInputLayout
         style="@style/MYTextInputLayout">
         <EditText
+            android:id="@+id/reapit_password"
             android:inputType="textPassword"
             android:hint="@string/reapid_password"
             style="@style/MyEditText"/>

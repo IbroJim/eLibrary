@@ -56,7 +56,6 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
         bookViewHolder.txtGenreBook.setText(bookList.get(position).getGenreName());
         downloadCover(bookViewHolder.imageCover,bookList.get(position).getId());
     }
-
     @Override
     public int getItemCount() {
         return bookList.size();
@@ -118,5 +117,14 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
            }
        });
    }
+    public void setFiltrBook(ArrayList<Book> newList){
+        bookList=new ArrayList<>();
+        bookList.addAll(newList);
+        notifyDataSetChanged();
+
+
+    }
+
+
 
 }

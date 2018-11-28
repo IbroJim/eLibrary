@@ -1,11 +1,13 @@
 package hackathon.elibrary.Search;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -43,6 +47,9 @@ public class SearchActivty extends AppCompatActivity {
     private static final String SAVE_TOKEN = "saveToken";
     private static final String ID_BOOK = "idBook";
     private static final int ACTIVITY_NUM=2;
+    private static final int SEARCH_BY_TITLE=0;
+    private static final int SEARCH_BY_FIRST_NAME=1;
+    private static final int SEARCH_BY_LAST_NAME=1;
 
 
 
@@ -51,6 +58,10 @@ public class SearchActivty extends AppCompatActivity {
     private GenreRecyclerAdapter genreRecyclerAdapter;
     private Context mContext=SearchActivty.this;
     private ProgressBar progressBar;
+    private SearchView searchView;
+    private ArrayList<Book> arrayListBook;
+    private int chekQuery;
+
 
 
 
@@ -62,6 +73,8 @@ public class SearchActivty extends AppCompatActivity {
         getAllGenre();
         getAllBooks();
         setupView();
+        setupTypeFiltrBook();
+
     }
     private void setupNavigation(){
         BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.bottom_navigatiom_view_id);
@@ -81,7 +94,9 @@ public class SearchActivty extends AppCompatActivity {
                 if(response.code()==200){
                     setupRecyclerView(response.body(),mContext);
                     progressBar.setVisibility(View.INVISIBLE);
-                }
+                    searchBooksByTitle(response.body());
+                    arrayListBook=response.body();
+                    }
             }
 
             @Override
@@ -114,9 +129,10 @@ public class SearchActivty extends AppCompatActivity {
     }
     private void setupRecyclerView(final ArrayList<Book> listBook, Context context) {
         recyclerView = (RecyclerView) findViewById(R.id.search_recycler_view);
-        bookRecyclerAdapter = new BookRecyclerAdapter(listBook, context);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
+        bookRecyclerAdapter = new BookRecyclerAdapter(listBook, context);
         recyclerView.setAdapter(bookRecyclerAdapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -134,6 +150,7 @@ public class SearchActivty extends AppCompatActivity {
         }));
     }
     private void setupView(){
+        searchView=(SearchView) findViewById(R.id.search_book);
         progressBar=(ProgressBar) findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -175,6 +192,7 @@ public class SearchActivty extends AppCompatActivity {
                 if(response.code()==200) {
                     progressBar.setVisibility(View.INVISIBLE);
                     setupRecyclerView(response.body(), mContext);
+                    arrayListBook=response.body();
                 }
             }
 
@@ -184,6 +202,105 @@ public class SearchActivty extends AppCompatActivity {
             }
         });
     }
+    private void searchBooksByTitle(final ArrayList<Book> arrayList){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                newText=newText.toLowerCase();
+                ArrayList<Book> newList=new ArrayList<>();
+                for(Book book:arrayList){
+                    String nameBook=book.getTitle().toLowerCase();
+                    if(nameBook.contains(newText)) {
+                        newList.add(book);
+                    }
+                }
+                bookRecyclerAdapter.setFiltrBook(newList);
+                return true;
+            }
+        });
+    }
+    private void searchBooksByFirstNameAvtor(final ArrayList<Book> arrayList){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                newText=newText.toLowerCase();
+                ArrayList<Book> newList=new ArrayList<>();
+                for(Book book:arrayList){
+                    String avtorFirstName=book.getAuthorFirstName().toLowerCase();
+                    if(avtorFirstName.contains(newText)) {
+                        newList.add(book);
+                    }
+                }
+                bookRecyclerAdapter.setFiltrBook(newList);
+                return true;
+            }
+        });
+    }
+    private void searchBooksByLastNameAvtor(final  ArrayList<Book> arrayList){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                newText=newText.toLowerCase();
+                ArrayList<Book> newList=new ArrayList<>();
+                for(Book book:arrayList){
+                    String avtorLastName=book.getAuthorLastName().toLowerCase();
+                    if(avtorLastName.contains(newText)) {
+                        newList.add(book);
+                    }
+                }
+                bookRecyclerAdapter.setFiltrBook(newList);
+                return true;
+            }
+        });
+    }
+    private void setupTypeFiltrBook(){
+        ImageView imageAlert=(ImageView) findViewById(R.id.menu_filtr);
+        imageAlert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
 
+        AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
+        builder.setTitle("Выберите тип поиска");
+        builder.setSingleChoiceItems(R.array.serch_title_array, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        searchBooksByTitle(arrayListBook);
+                    case 1:
+                        searchBooksByFirstNameAvtor(arrayListBook);
+                    case 2:
+                        searchBooksByLastNameAvtor(arrayListBook);
+                }
+
+            }
+        });
+        builder.setPositiveButton("Готово", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog mDialog=builder.create();
+        mDialog.show();
+            }
+        });
+    }
 }

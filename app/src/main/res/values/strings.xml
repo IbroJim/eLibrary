@@ -40,4 +40,10 @@
     <string name="read">Читать</string>
     <string name="add_to_read">Добавить в прочитанное</string>
     <string name="create_book">Добавить книгу</string>
+
+    <string-array name="serch_title_array">
+        <item>По название книги</item>
+        <item>По имени автора</item>
+        <item>По фамилии автора</item>
+    </string-array>
 </resources>

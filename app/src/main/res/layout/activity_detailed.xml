@@ -21,7 +21,9 @@
         android:layout_marginTop="16dp"
         android:layout_toRightOf="@+id/cover_book_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_toEndOf="@+id/cover_book_image">
         <TextView
             android:id="@+id/name_book"
             style="@style/MyTexViewDeatails"
@@ -43,7 +45,8 @@
                 android:textColor="@color/colorBlack"
                 android:text="@string/last_name_avtor"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp" />
         </LinearLayout>
         <TextView
             android:id="@+id/book_genre"
@@ -70,13 +73,14 @@
         app:icon_size="25dp"
         android:id="@+id/hear_button"
         android:layout_width="40dp"
-        android:layout_height="40dp" />
+        android:layout_height="40dp"
+        android:layout_toEndOf="@id/cover_book_image" />
     <Button
         android:layout_marginTop="10dp"
        android:layout_toRightOf="@id/hear_button"
         android:layout_below="@id/information"
         android:id="@+id/download_books"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:text="@string/download"
         android:background="@drawable/login_button_background"
         android:layout_width="150dp"
@@ -112,7 +116,7 @@
         android:layout_marginBottom="8dp"
         android:layout_alignParentBottom="true"
         android:id="@+id/read_book"
-        android:textSize="10sp"
+        android:textSize="14sp"
         android:text="@string/read"
         android:layout_marginTop="8dp"
         android:background="@drawable/login_button_background"

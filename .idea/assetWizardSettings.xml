@@ -19,9 +19,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="D:\for Сундар\dc7LRd7pi.png" />
+                                      <entry key="imageAsset" value="D:\for Сундар\лого.png" />
                                       <entry key="outputName" value="ic_genre_image" />
-                                      <entry key="theme" value="CUSTOM" />
                                       <entry key="themeColor" value="010101" />
                                     </map>
                                   </option>
@@ -34,7 +33,9 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="D:\for Сундар\book.png" />
+                                      <entry key="iconShape" value="NONE" />
+                                      <entry key="imageAsset" value="D:\for Сундар\лого.png" />
+                                      <entry key="outputName" value="ic_logo" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -44,7 +45,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputIconType" value="ACTIONBAR" />
+                            <entry key="outputIconType" value="LAUNCHER_LEGACY" />
                           </map>
                         </option>
                       </PersistentState>

@@ -249,7 +249,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArrayList<HelpBook>> call, Response<ArrayList<HelpBook>> response) {
                 if(response.code()==200){
-                    Toast.makeText(mContext,"ASDsa"+response.code(),Toast.LENGTH_SHORT).show();
                     setupNewBookRecyclerView(response.body(),mContext);
                     newBooksProgress.setVisibility(View.INVISIBLE);
                 }

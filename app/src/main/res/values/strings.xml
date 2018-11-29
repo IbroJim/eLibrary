@@ -41,6 +41,7 @@
     <string name="add_to_read">Добавить в прочитанное</string>
     <string name="create_book">Добавить книгу</string>
     <string name="popular">Популярное</string>
+    <string name="exit">Выйти</string>
 
     <string-array name="serch_title_array">
         <item>По название книги</item>

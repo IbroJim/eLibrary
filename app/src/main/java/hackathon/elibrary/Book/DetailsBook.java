@@ -269,7 +269,6 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                    Toast.makeText(mContext,"responce"+response.code(),Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -418,7 +417,6 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
         call.enqueue(new Callback<ArrayList<FavoriteBook>>() {
             @Override
             public void onResponse(Call<ArrayList<FavoriteBook>> call, retrofit2.Response<ArrayList<FavoriteBook>> response) {
-                Toast.makeText(mContext,"responce"+response.code(),Toast.LENGTH_SHORT).show();
                 if(response.code()==200){
                     addFavoritesBook.setLiked(true);
                 }

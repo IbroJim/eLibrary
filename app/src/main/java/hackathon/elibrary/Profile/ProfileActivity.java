@@ -14,12 +14,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import hackathon.elibrary.Account.LoginActivity;
 import hackathon.elibrary.Book.DetailsBook;
 import hackathon.elibrary.Book.NewBook;
 import hackathon.elibrary.POJO.AccountData;
@@ -46,6 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Context mContext=ProfileActivity.this;
     private TextView lastName,firstName,login;
     private boolean banned=false;
+    private ImageView imageClose;
 
 
 
@@ -58,11 +61,13 @@ public class ProfileActivity extends AppCompatActivity {
         setupView();
         getUserInformation();
         createBook();
+        closeProfile();
     }
     private void setupView(){
         lastName=(TextView) findViewById(R.id.last_name_user);
         firstName=(TextView) findViewById(R.id.name_user);
         login=(TextView)findViewById(R.id.login_user);
+        imageClose=(ImageView) findViewById(R.id.exit);
     }
     private void setupViewProfile(){
         sectionPageAdapter=new SectionPageAdapter((getSupportFragmentManager()));
@@ -135,6 +140,22 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    private void closeProfile(){
+        imageClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteToken();
+                Intent intent=new Intent(mContext,LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+    private void deleteToken(){
+        SharedPreferences sharedPreferences=getSharedPreferences("myToken",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString(SAVE_TOKEN,null);
+        editor.apply();
     }
 
 

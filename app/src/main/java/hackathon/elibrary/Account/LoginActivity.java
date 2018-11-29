@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView textView;
     private Context mContext=LoginActivity.this;
     private EditText editLogin,editPasswrod;
-    private CheckBox remeberMe;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
     private  void  setupView(){
              editLogin=(EditText) findViewById(R.id.login_in_login);
              editPasswrod=(EditText) findViewById(R.id.login_in_passwrod);
-             remeberMe=(CheckBox)  findViewById(R.id.save_me);
             }
     private void logInProfile(LogIn logIn){
     Retrofit.Builder builder= new Retrofit.Builder()
@@ -69,11 +68,11 @@ public class LoginActivity extends AppCompatActivity {
                 saveMyToken(response.body().getId_token());
                 Intent intent=new Intent(mContext,HomeActivity.class);
                 startActivity(intent);
-            }
+            }else {Toast.makeText(mContext,"Проверьте логин или пароль",Toast.LENGTH_SHORT).show();}
         }
         @Override
         public void onFailure(Call<LogIn> call, Throwable t) {
-            Toast.makeText(mContext," Petyx",Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext,"Произошла ошибка ",Toast.LENGTH_SHORT).show();
         }
     });
 }
@@ -100,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                     LogIn logIn = new LogIn(editLogin.getText().toString(),
                             editPasswrod.getText().toString());
                     logInProfile(logIn);
-                }
+                }else {Toast.makeText(mContext,"Введите данные",Toast.LENGTH_SHORT).show();}
             }
         });
     }

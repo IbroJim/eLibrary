@@ -49,7 +49,6 @@ public class RegistryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(editEmaill.getText().toString()!=null&&editLastName.getText().toString()!=null&&editFirstName.getText().toString()!=null&&
                 editLogin.getText().toString()!=null&&editPassword.getText().toString()!=null){
-                    if(editPassword.getText().toString()==reapitPassword.getText().toString()) {
                         User user = new User(activated,
                                 editEmaill.getText().toString(),
                                 editLastName.getText().toString(),
@@ -58,7 +57,6 @@ public class RegistryActivity extends AppCompatActivity {
                                 editPassword.getText().toString(),
                                 langKey);
                         setupConnectionApi(user);
-                    }else {Toast.makeText(mContext,"Пароль не совпадает",Toast.LENGTH_SHORT).show();}
                 }else {Toast.makeText(mContext,"Введите данные",Toast.LENGTH_SHORT).show();}
             }
         });
@@ -82,7 +80,6 @@ public class RegistryActivity extends AppCompatActivity {
                 Request original=chain.request();
                 Request request=original.newBuilder()
                         .addHeader("Content-Type","application/json")
-                        .addHeader("Accept","*/*")
                         .method(original.method(),original.body()).build();
                 return chain.proceed(request);
             }

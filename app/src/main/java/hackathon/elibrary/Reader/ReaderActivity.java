@@ -51,11 +51,12 @@ public class ReaderActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader);
+        createDataBase();
         setupNavigation();
         setupView();
         chekedLastBook();
         setupPdfView();
-        createDataBase();
+
     }
     private void createDataBase(){
         myDbHelper = new DatabaseHelper(this);

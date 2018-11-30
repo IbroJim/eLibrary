@@ -34,8 +34,8 @@
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="imageAsset" value="D:\for Сундар\лого.png" />
-                                      <entry key="outputName" value="ic_logo" />
+                                      <entry key="imageAsset" value="D:\for Сундар\куда то.png" />
+                                      <entry key="outputName" value="ic_registry_book_logo" />
                                     </map>
                                   </option>
                                 </PersistentState>

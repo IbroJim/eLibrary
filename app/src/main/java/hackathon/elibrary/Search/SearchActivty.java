@@ -163,7 +163,7 @@ public class SearchActivty extends AppCompatActivity {
       recyclerGenre.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerGenre, new RecyclerItemClickListener.OnItemClickListener() {
           @Override
           public void onItemClick(View view, int position) {
-               if(genreList.get(position).getId()==1851){
+               if(genreList.get(position).getId()==951){
                    getAllBooks();
                    progressBar.setVisibility(View.VISIBLE);
                    Toast.makeText(mContext,"Все книги",Toast.LENGTH_SHORT).show();

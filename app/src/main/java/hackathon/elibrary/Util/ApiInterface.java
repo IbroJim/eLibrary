@@ -84,7 +84,7 @@ public interface ApiInterface {
     Call<ResponseBody>  downloadCover(@Path("bookId")long bookId);
 
   @GET("api/favorite-books")
-    Call<ArrayList<FavoriteBook>> getAllFavoriteBook();
+    Call<ArrayList<FavoriteBook>> getAllFavoriteBook(@Query("profileId.equals") long profileId);
 
   @GET("api/read-books")
     Call<ArrayList<FavoriteBook>> getAllreadBooks();
@@ -94,7 +94,7 @@ public interface ApiInterface {
 
   @GET("api/favorite-books")
     Call<ArrayList<FavoriteBook>> checkFavoriteBook(@Query("bookId.equals") long bookId,
-                                         @Query("profileId.equals") long profileId);
+                                                    @Query("profileId.equals") long profileId);
   @GET("api/books/")
     Call<ArrayList<Book>> getBookFiltrGenre(@Query("approved.equals") boolean approved,
                                             @Query("genreId.equals")long genre);

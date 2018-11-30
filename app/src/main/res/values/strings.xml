@@ -42,6 +42,8 @@
     <string name="create_book">Добавить книгу</string>
     <string name="popular">Популярное</string>
     <string name="exit">Выйти</string>
+    <string name="tranlsate">Перевод</string>
+    <string name="regis">Регистрация</string>
 
     <string-array name="serch_title_array">
         <item>По название книги</item>

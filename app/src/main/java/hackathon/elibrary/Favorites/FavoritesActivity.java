@@ -39,6 +39,7 @@ public class FavoritesActivity extends AppCompatActivity {
     private static final String SAVE_TOKEN = "saveToken";
     private static final int ACTIVITY_NUM=0;
     private static final String ID_BOOK = "idBook";
+    private static final String SAVE_PROFILE = "profileID";
 
     private Context mContext=FavoritesActivity.this;
     private ProgressBar progressBar;
@@ -65,9 +66,11 @@ public class FavoritesActivity extends AppCompatActivity {
         menuItem.setChecked(true);
     }
     private void getAllBooks(){
+        Integer integer=getProfile();
+        Long idLong=Long.parseLong(String.valueOf(integer));
         Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
         ApiInterface apiInterface=retrofit.create(ApiInterface.class);
-        Call<ArrayList<FavoriteBook>> call=apiInterface.getAllFavoriteBook();
+        Call<ArrayList<FavoriteBook>> call=apiInterface.getAllFavoriteBook(idLong);
         call.enqueue(new Callback<ArrayList<FavoriteBook>>() {
             @Override
             public void onResponse(Call<ArrayList<FavoriteBook>> call, Response<ArrayList<FavoriteBook>> response) {
@@ -108,6 +111,10 @@ public class FavoritesActivity extends AppCompatActivity {
 
             }
         }));
+    }
+    private Integer getProfile(){
+        SharedPreferences sharedPreferences = getSharedPreferences("profileId", Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(SAVE_PROFILE, 0);
     }
 
 }

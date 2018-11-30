@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
@@ -64,18 +65,20 @@ import retrofit2.Retrofit;
 public class HomeActivity extends AppCompatActivity {
 
 
-    private static final int ACTIVITY_NUM=1;
-    private static final String SAVE_TOKEN="saveToken";
-    private static final String TAG="HomeActivity";
-    private static final String ACCOUNT_ID="MyAccountId";
+    private static final int ACTIVITY_NUM = 1;
+    private static final String SAVE_TOKEN = "saveToken";
+    private static final String TAG = "HomeActivity";
+    private static final String ACCOUNT_ID = "MyAccountId";
     private static final String SAVE_PROFILE = "profileID";
     private static final String ID_BOOK = "idBook";
 
-    private ProgressBar popularProgress,newBooksProgress;
-    private Context mContext=HomeActivity.this;
-    private RecyclerView popularRecycler,newBookRecycler;
+    private ProgressBar popularProgress, newBooksProgress;
+    private Context mContext = HomeActivity.this;
+    private RecyclerView popularRecycler, newBookRecycler;
     private HomeAdapterRecycler adapterPopular;
     private HomeNewBookRecyclerAdapter adapterNewBook;
+    private DatabaseHelper myDbHelper;
+    private SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,58 +90,66 @@ public class HomeActivity extends AppCompatActivity {
         getAccountId();
         getTopBooks();
         getNewBook();
+        createDB();
     }
-    private void createFolder(){
-        File folder=new File(Environment.getExternalStorageDirectory()+"/eLibrary");
-        boolean succes=true;
-        if(!folder.exists()){
-            succes=folder.mkdir();
+
+    private void createFolder() {
+        File folder = new File(Environment.getExternalStorageDirectory() + "/eLibrary");
+        boolean succes = true;
+        if (!folder.exists()) {
+            succes = folder.mkdir();
         }
-        if(succes){
-            Log.d(TAG,"Созданно");
-        }else {
-            Log.d(TAG,"Ошибка");
+        if (succes) {
+            Log.d(TAG, "Созданно");
+        } else {
+            Log.d(TAG, "Ошибка");
         }
+
     }
-    private void setupNavigation(){
-        BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.bottom_navigatiom_view_id);
+
+    private void setupNavigation() {
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_navigatiom_view_id);
         BottomNavigationSetupOptions.setupBottomNavigatiomViewEx(bottomNavigationViewEx);
-        BottomNavigationSetupOptions.enableBottomNavigation(bottomNavigationViewEx,mContext,ACTIVITY_NUM);
-        Menu menu=bottomNavigationViewEx.getMenu();
-        MenuItem menuItem=menu.getItem(ACTIVITY_NUM);
+        BottomNavigationSetupOptions.enableBottomNavigation(bottomNavigationViewEx, mContext, ACTIVITY_NUM);
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }
-    private   String getToken(){
-         SharedPreferences sharedPreferences=getSharedPreferences("myToken",Context.MODE_PRIVATE);
-          return sharedPreferences.getString(SAVE_TOKEN,"");
+
+    private String getToken() {
+        SharedPreferences sharedPreferences = getSharedPreferences("myToken", Context.MODE_PRIVATE);
+        return sharedPreferences.getString(SAVE_TOKEN, "");
     }
-    private void  getAccountId(){
-      final String token = getToken();
-      Retrofit retrofit=OkHttpHelper.getRetrofitToken(token);
-      final ApiInterface apiInterface=retrofit.create(ApiInterface.class);
-      Call<AccountData> call=apiInterface.getUser();
-      call.enqueue(new Callback<AccountData>() {
-          @Override
-          public void onResponse(Call<AccountData> call, retrofit2.Response<AccountData> response ) {
 
-              if(response.code()==200) {
-                  saveAccountId(response.body().getId());
-                  takeProfileId(response.body().getId());
-              }
-          }
+    private void getAccountId() {
+        final String token = getToken();
+        Retrofit retrofit = OkHttpHelper.getRetrofitToken(token);
+        final ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+        Call<AccountData> call = apiInterface.getUser();
+        call.enqueue(new Callback<AccountData>() {
+            @Override
+            public void onResponse(Call<AccountData> call, retrofit2.Response<AccountData> response) {
 
-          @Override
-          public void onFailure(Call<AccountData> call, Throwable t) {
-              Log.d(TAG,"No worold");
-          }
-      });
-  }
-    private void saveAccountId(Integer id){
-     SharedPreferences sharedPreferences1=getSharedPreferences("myAccountId",Context.MODE_PRIVATE);
-     SharedPreferences.Editor editorInt=sharedPreferences1.edit();
-     editorInt.putInt(ACCOUNT_ID,id);
-     editorInt.apply();
- }
+                if (response.code() == 200) {
+                    saveAccountId(response.body().getId());
+                    takeProfileId(response.body().getId());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AccountData> call, Throwable t) {
+                Log.d(TAG, "No worold");
+            }
+        });
+    }
+
+    private void saveAccountId(Integer id) {
+        SharedPreferences sharedPreferences1 = getSharedPreferences("myAccountId", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editorInt = sharedPreferences1.edit();
+        editorInt.putInt(ACCOUNT_ID, id);
+        editorInt.apply();
+    }
+
     private void takeProfileId(Integer idAcc) {
         Long longs = Long.parseLong(String.valueOf(idAcc));
         Retrofit retrofit = OkHttpHelper.getRetrofitToken(getToken());
@@ -148,7 +159,7 @@ public class HomeActivity extends AppCompatActivity {
         call.enqueue(new Callback<Profile>() {
             @Override
             public void onResponse(Call<Profile> call, Response<Profile> response) {
-                if(response.code()==200) {
+                if (response.code() == 200) {
                     saveIdProfile(response.body().getId());
                 }
             }
@@ -160,6 +171,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
     }
+
     private void saveIdProfile(Integer id) {
         SharedPreferences sharedPreferences = getSharedPreferences("profileId", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -167,16 +179,17 @@ public class HomeActivity extends AppCompatActivity {
         editor.apply();
 
     }
-    private void getTopBooks(){
-        Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
-        ApiInterface apiInterface=retrofit.create(ApiInterface.class);
-        Call<ArrayList<Book>> call=apiInterface.getTopBooks(true);
+
+    private void getTopBooks() {
+        Retrofit retrofit = OkHttpHelper.getRetrofitToken(getToken());
+        ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+        Call<ArrayList<Book>> call = apiInterface.getTopBooks(true);
         call.enqueue(new Callback<ArrayList<Book>>() {
             @Override
             public void onResponse(Call<ArrayList<Book>> call, Response<ArrayList<Book>> response) {
-                if(response.code()==200){
-                   setupRecyclerView(response.body(),mContext);
-                   popularProgress.setVisibility(View.INVISIBLE);
+                if (response.code() == 200) {
+                    setupRecyclerView(response.body(), mContext);
+                    popularProgress.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -186,24 +199,26 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-    private void setupView(){
-        popularProgress=(ProgressBar) findViewById(R.id.progress_popular);
+
+    private void setupView() {
+        popularProgress = (ProgressBar) findViewById(R.id.progress_popular);
         popularProgress.setVisibility(View.VISIBLE);
-        newBooksProgress=(ProgressBar) findViewById(R.id.progress_new_book);
+        newBooksProgress = (ProgressBar) findViewById(R.id.progress_new_book);
         newBooksProgress.setVisibility(View.VISIBLE);
     }
+
     private void setupRecyclerView(final ArrayList<Book> listBook, Context context) {
         popularRecycler = (RecyclerView) findViewById(R.id.popular_recycler);
-        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         popularRecycler.setLayoutManager(layoutManager);
         adapterPopular = new HomeAdapterRecycler(listBook, context);
         popularRecycler.setAdapter(adapterPopular);
         popularRecycler.addOnItemTouchListener(new RecyclerItemClickListener(context, popularRecycler, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                int id=listBook.get(position).getId();
-                Intent intent=new Intent(mContext,DetailsBook.class);
-                intent.putExtra(ID_BOOK,id);
+                int id = listBook.get(position).getId();
+                Intent intent = new Intent(mContext, DetailsBook.class);
+                intent.putExtra(ID_BOOK, id);
                 startActivity(intent);
             }
 
@@ -213,18 +228,19 @@ public class HomeActivity extends AppCompatActivity {
             }
         }));
     }
+
     private void setupNewBookRecyclerView(final ArrayList<HelpBook> listBook, Context context) {
         newBookRecycler = (RecyclerView) findViewById(R.id.new_books_recycler);
-        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         newBookRecycler.setLayoutManager(layoutManager);
-        adapterNewBook=new HomeNewBookRecyclerAdapter(listBook, context);
+        adapterNewBook = new HomeNewBookRecyclerAdapter(listBook, context);
         newBookRecycler.setAdapter(adapterNewBook);
         newBookRecycler.addOnItemTouchListener(new RecyclerItemClickListener(context, newBookRecycler, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                int id=listBook.get(position).getId();
-                Intent intent=new Intent(mContext,DetailsBook.class);
-                intent.putExtra(ID_BOOK,id);
+                int id = listBook.get(position).getId();
+                Intent intent = new Intent(mContext, DetailsBook.class);
+                intent.putExtra(ID_BOOK, id);
                 startActivity(intent);
             }
 
@@ -235,21 +251,20 @@ public class HomeActivity extends AppCompatActivity {
         }));
     }
 
-
     @SuppressLint("NewApi")
-    private void getNewBook(){
-        Instant instant=Instant.now();
-        Log.d("Home","До "+instant);
-        instant = instant.minus(7,ChronoUnit.DAYS);
-        Log.d("Home","После "+instant);
-        Retrofit retrofit=OkHttpHelper.getRetrofitToken(getToken());
-        ApiInterface apiInterface=retrofit.create(ApiInterface.class);
-        Call<ArrayList<HelpBook>> call=apiInterface.getNewBook(true,instant);
+    private void getNewBook() {
+        Instant instant = Instant.now();
+        Log.d("Home", "До " + instant);
+        instant = instant.minus(7, ChronoUnit.DAYS);
+        Log.d("Home", "После " + instant);
+        Retrofit retrofit = OkHttpHelper.getRetrofitToken(getToken());
+        ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+        Call<ArrayList<HelpBook>> call = apiInterface.getNewBook(true, instant);
         call.enqueue(new Callback<ArrayList<HelpBook>>() {
             @Override
             public void onResponse(Call<ArrayList<HelpBook>> call, Response<ArrayList<HelpBook>> response) {
-                if(response.code()==200){
-                    setupNewBookRecyclerView(response.body(),mContext);
+                if (response.code() == 200) {
+                    setupNewBookRecyclerView(response.body(), mContext);
                     newBooksProgress.setVisibility(View.INVISIBLE);
                 }
             }
@@ -261,11 +276,27 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    private void createDB() {
+            myDbHelper = new DatabaseHelper(this);
+            try {
+                myDbHelper.createDataBase();
+            } catch (IOException ioe) {
+                throw new Error("Unable to create database");
+            }
 
-
-
-
-
-
-
+            try {
+                myDbHelper.openDataBase();
+            } catch (SQLException sqle) {
+                throw sqle;
+            }
+    }
 }
+
+
+
+
+
+
+
+
+

@@ -32,46 +32,10 @@
                 android:layout_marginStart="8dp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
-    <RelativeLayout
-        android:id="@+id/search_layout"
-        android:layout_marginTop="16dp"
-        android:layout_below="@id/toolbar_favorites"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/shape_background">
-  <ImageView
-      android:id="@+id/menu_filtr"
-      android:layout_marginRight="16dp"
-      android:src="@drawable/ic_menu_filtr"
-      android:layout_alignParentRight="true"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:layout_marginEnd="16dp"
-      android:layout_alignParentEnd="true" />
-   <ImageView
-       android:id="@+id/search_book"
-       android:layout_toLeftOf="@id/menu_filtr"
-       android:src="@drawable/ic_search"
-       android:layout_width="wrap_content"
-       android:layout_height="match_parent"
-       android:layout_toStartOf="@id/menu_filtr" />
-   <EditText
-       android:layout_marginLeft="16dp"
-       android:layout_centerVertical="true"
-       android:layout_toLeftOf="@id/search_book"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:hint="@string/search"
-       android:backgroundTint="@color/colorWhite"
-       android:layout_toStartOf="@id/search_book"
-       tools:targetApi="lollipop" />
-    </RelativeLayout>
     <android.support.v7.widget.RecyclerView
         style="@style/MyVerticalLisr"
         android:id="@+id/recycler_view"
-        android:layout_below="@id/search_layout"
+        android:layout_marginTop="50dp"
        >
     </android.support.v7.widget.RecyclerView>
 

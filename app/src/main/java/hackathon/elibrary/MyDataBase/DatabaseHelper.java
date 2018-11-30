@@ -19,7 +19,7 @@ import hackathon.elibrary.POJO.Book;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
- private static final int DATABASE_VERSION=1;
+ private static final int DATABASE_VERSION=2;
  private static final String DB_NAME="eLibraryDb";
  private static String DB_PATH = "/data/data/hackathon.elibrary/databases/";
  private final Context mContext;
@@ -29,7 +29,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context){
         super(context,DB_NAME,null,DATABASE_VERSION);
         this.mContext = context;
-
     }
 
     public void createDataBase() throws IOException {
@@ -113,16 +112,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table "+BookTable.NAME_TABLE_TWO+"("+BookTable.NameOfFields.ID+" integer primary key,"
-        +BookTable.NameOfFields.ID_BOOK+" integer,"+BookTable.NameOfFields.FIRST_NAME+" text,"+BookTable.NameOfFields.LAST_NAME+" text,"+BookTable.NameOfFields.GENRE+" text,"
-        +BookTable.NameOfFields.PAGE+" integer,"+BookTable.NameOfFields.DATE_PIBLICATION+" integer,"+BookTable.NameOfFields.TITLE+" text,"+BookTable.NameOfFields.CREATED_BY+" text,"+BookTable.NameOfFields.DISCRIPTION+" text,"+
-                BookTable.NameOfFields.NAME_FILE+" text"+")");
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists "+BookTable.NAME_TABLE_TWO);
-        onCreate(db);
+        if (oldVersion<2){
+            db.execSQL("create table "+BookTable.NAME_TABLE_TWO+"("+BookTable.NameOfFields.ID+" integer primary key,"
+                    +BookTable.NameOfFields.ID_BOOK+" integer,"+BookTable.NameOfFields.FIRST_NAME+" text,"+BookTable.NameOfFields.LAST_NAME+" text,"+BookTable.NameOfFields.GENRE+" text,"
+                    +BookTable.NameOfFields.PAGE+" integer,"+BookTable.NameOfFields.DATE_PIBLICATION+" integer,"+BookTable.NameOfFields.TITLE+" text,"+BookTable.NameOfFields.CREATED_BY+" text,"+BookTable.NameOfFields.DISCRIPTION+" text,"+
+                    BookTable.NameOfFields.NAME_FILE+" text"+")");
+        }
     }
 
     public Cursor getInformation(SQLiteDatabase db){

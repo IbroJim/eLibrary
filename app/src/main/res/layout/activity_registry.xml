@@ -5,21 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
-    <ImageView
-        android:id="@+id/image_big_logo"
-        android:src="@drawable/big_logo"
-        android:layout_width="match_parent"
-        android:layout_height="100dp" />
+
+
+
     <LinearLayout
-        android:layout_below="@id/image_big_logo"
+        android:layout_marginTop="64dp"
         android:orientation="vertical"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/registry_logo"
+                android:src="@drawable/registry_logo"
+                android:layout_alignParentLeft="true"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentStart="true" />
+            <ImageView
+                android:layout_centerVertical="true"
+                android:src="@drawable/registry_title"
+                android:layout_toRightOf="@id/registry_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/registry_logo" />
+        </RelativeLayout>
 
 
-    <android.support.design.widget.TextInputLayout
+
+        <android.support.design.widget.TextInputLayout
 
         style="@style/MYTextInputLayout">
         <EditText

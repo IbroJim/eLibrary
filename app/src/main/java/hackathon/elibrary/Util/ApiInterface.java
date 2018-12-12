@@ -3,8 +3,11 @@ package hackathon.elibrary.Util;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import hackathon.elibrary.MyDataBase.DatabaseHelper;
+import hackathon.elibrary.POJO.BookHelp;
 import hackathon.elibrary.POJO.Favorite;
 import hackathon.elibrary.POJO.Book;
 import hackathon.elibrary.POJO.BookDetails;
@@ -97,13 +100,15 @@ public interface ApiInterface {
                                                     @Query("profileId.equals") long profileId);
   @GET("api/books/")
     Call<ArrayList<Book>> getBookFiltrGenre(@Query("approved.equals") boolean approved,
-                                            @Query("genreId.equals")long genre);
+                                                @Query("genreId.equals")long genre);  @GET("api/books/")
+    Call<ArrayList<BookHelp>> getBookFiltrGenreHelp(@Query("approved.equals") boolean approved,
+                                                @Query("genreId.equals")long genre);
 
   @GET("api/favorite-books/top")
     Call<ArrayList<Book>> getTopBooks(@Query("approved.equals") boolean approved);
 
   @GET("api/books")
     Call<ArrayList<HelpBook>> getNewBook(@Query("approved.equals") boolean approved,
-                                         @Query("createdDate.greaterThan")Instant zonedDateTime);
+                                         @Query("createdDate.greaterThan")String date);
 
 }

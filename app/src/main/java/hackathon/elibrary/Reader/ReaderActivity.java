@@ -54,7 +54,6 @@ public class ReaderActivity extends AppCompatActivity {
         createDataBase();
         setupNavigation();
         setupView();
-        chekedLastBook();
         setupPdfView();
 
     }
@@ -133,11 +132,12 @@ public class ReaderActivity extends AppCompatActivity {
         Intent intent=getIntent();
         String nameFile = intent.getStringExtra(NAME_FILE_PDF);
             if(nameFile!=null) {
+                Toast.makeText(mContext,"Hello worold",Toast.LENGTH_SHORT).show();
                 saveLastBook(nameFile);
                 String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/eLibrary";
                 File file = new File(path, nameFile);
                 pdfView.fromFile(file).load();
-            }
+            }else {chekedLastBook();}
 
     }
     private void saveLastBook(String nameBook){
@@ -152,7 +152,7 @@ public class ReaderActivity extends AppCompatActivity {
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/eLibrary";
             File file = new File(path, nameFile);
             pdfView.fromFile(file).load();
-        }
+        };
 
     }
     private String getLastBook(){

@@ -34,6 +34,7 @@ public class DownloadBookRecyclerAdapter extends RecyclerView.Adapter<DownloadBo
         downlaodBookViewHolder.txtFirstName.setText(bookDowloadList.get(position).getFirstAutor());
         downlaodBookViewHolder.txtLastNameAvtor.setText(bookDowloadList.get(position).getLastAutor());
         downlaodBookViewHolder.txtGenreBook.setText(bookDowloadList.get(position).getGenre());
+        downlaodBookViewHolder.imageCover.setImageResource(R.drawable.cover_download_image);
 
     }
 

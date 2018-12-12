@@ -2,10 +2,8 @@ package hackathon.elibrary.Search;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +11,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -22,15 +20,12 @@ import android.widget.Toast;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import hackathon.elibrary.Book.DetailsBook;
 import hackathon.elibrary.POJO.Book;
 import hackathon.elibrary.POJO.Genre;
 import hackathon.elibrary.R;
-import hackathon.elibrary.Reader.ReaderActivity;
 import hackathon.elibrary.Util.ApiInterface;
 import hackathon.elibrary.Util.BookRecyclerAdapter;
 import hackathon.elibrary.Util.BottomNavigationSetupOptions;
@@ -47,9 +42,7 @@ public class SearchActivty extends AppCompatActivity {
     private static final String SAVE_TOKEN = "saveToken";
     private static final String ID_BOOK = "idBook";
     private static final int ACTIVITY_NUM=2;
-    private static final int SEARCH_BY_TITLE=0;
-    private static final int SEARCH_BY_FIRST_NAME=1;
-    private static final int SEARCH_BY_LAST_NAME=1;
+
 
 
 
@@ -74,7 +67,7 @@ public class SearchActivty extends AppCompatActivity {
         getAllBooks();
         setupView();
         setupTypeFiltrBook();
-
+        updateButton();
     }
     private void setupNavigation(){
         BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.bottom_navigatiom_view_id);
@@ -96,7 +89,7 @@ public class SearchActivty extends AppCompatActivity {
                     progressBar.setVisibility(View.INVISIBLE);
                     searchBooksByTitle(response.body());
                     arrayListBook=response.body();
-                    }
+               }
             }
 
             @Override
@@ -128,31 +121,19 @@ public class SearchActivty extends AppCompatActivity {
         return sharedPreferences.getString(SAVE_TOKEN, "");
     }
     private void setupRecyclerView(final ArrayList<Book> listBook, Context context) {
-        recyclerView = (RecyclerView) findViewById(R.id.search_recycler_view);
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
         bookRecyclerAdapter = new BookRecyclerAdapter(listBook, context);
         recyclerView.setAdapter(bookRecyclerAdapter);
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                int id=listBook.get(position).getId();
-                Intent intent=new Intent(mContext,DetailsBook.class);
-                intent.putExtra(ID_BOOK,id);
-                startActivity(intent);
-            }
 
-            @Override
-            public void onLongItemClick(View view, int position) {
 
-            }
-        }));
     }
     private void setupView(){
         searchView=(SearchView) findViewById(R.id.search_book);
         progressBar=(ProgressBar) findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.VISIBLE);
+        recyclerView = (RecyclerView) findViewById(R.id.search_recycler_view);
+
     }
     private void setupGenreRecycler(final List<Genre> genreList){
       recyclerGenre=(RecyclerView) findViewById(R.id.genre_recycler);
@@ -163,15 +144,11 @@ public class SearchActivty extends AppCompatActivity {
       recyclerGenre.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerGenre, new RecyclerItemClickListener.OnItemClickListener() {
           @Override
           public void onItemClick(View view, int position) {
-               if(genreList.get(position).getId()==951){
-                   getAllBooks();
-                   progressBar.setVisibility(View.VISIBLE);
-                   Toast.makeText(mContext,"Все книги",Toast.LENGTH_SHORT).show();
-               }else{
-                   getBookGenre(genreList.get(position).getId());
-                   progressBar.setVisibility(View.VISIBLE);
-                   Toast.makeText(mContext,"Выбран жанр-"+genreList.get(position).getName(),Toast.LENGTH_SHORT).show();
-               }
+
+                     getBookGenre(genreList.get(position).getId());
+                     progressBar.setVisibility(View.VISIBLE);
+                     Toast.makeText(mContext,"Выбран жанр-"+genreList.get(position).getName(),Toast.LENGTH_SHORT).show();
+
           }
 
           @Override
@@ -190,9 +167,11 @@ public class SearchActivty extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArrayList<Book>> call, Response<ArrayList<Book>> response) {
                 if(response.code()==200) {
+
                     progressBar.setVisibility(View.INVISIBLE);
                     setupRecyclerView(response.body(), mContext);
-                    arrayListBook=response.body();
+
+
                 }
             }
 
@@ -236,8 +215,8 @@ public class SearchActivty extends AppCompatActivity {
                 newText=newText.toLowerCase();
                 ArrayList<Book> newList=new ArrayList<>();
                 for(Book book:arrayList){
-                    String avtorFirstName=book.getAuthorFirstName().toLowerCase();
-                    if(avtorFirstName.contains(newText)) {
+                    String nameBook=book.getAuthorFirstName().toLowerCase();
+                    if(nameBook.contains(newText)) {
                         newList.add(book);
                     }
                 }
@@ -273,8 +252,6 @@ public class SearchActivty extends AppCompatActivity {
         imageAlert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
         AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
         builder.setTitle("Выберите тип поиска");
         builder.setSingleChoiceItems(R.array.serch_title_array, -1, new DialogInterface.OnClickListener() {
@@ -283,10 +260,13 @@ public class SearchActivty extends AppCompatActivity {
                 switch (which) {
                     case 0:
                         searchBooksByTitle(arrayListBook);
+                        break;
                     case 1:
                         searchBooksByFirstNameAvtor(arrayListBook);
+                        break;
                     case 2:
                         searchBooksByLastNameAvtor(arrayListBook);
+                        break;
                 }
 
             }
@@ -303,4 +283,16 @@ public class SearchActivty extends AppCompatActivity {
             }
         });
     }
+    private void updateButton(){
+        ImageView button=(ImageView) findViewById(R.id.update);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                getAllBooks();
+            }
+        });
+    }
+
+
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -45,6 +46,7 @@ public class DetailsBookProfil extends AppCompatActivity implements View.OnClick
     private ImageView imageCover;
     private String nameFile;
     private Integer idBook;
+
 
 
 
@@ -123,6 +125,7 @@ public class DetailsBookProfil extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.read_book:
+                Toast.makeText(mContext,"d"+nameFile,Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(mContext,ReaderActivity.class);
                 intent.putExtra(NAME_FILE_PDF,nameFile);
                 startActivity(intent);

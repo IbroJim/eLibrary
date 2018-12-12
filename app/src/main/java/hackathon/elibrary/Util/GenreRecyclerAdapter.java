@@ -52,6 +52,7 @@ public class GenreRecyclerAdapter extends RecyclerView.Adapter<GenreRecyclerAdap
         public GenreRecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
             txtNameGenre=(TextView) itemView.findViewById(R.id.name_genre);
+            txtNameGenre.setSelected(true);
             imageGenre=(ImageView) itemView.findViewById(R.id.genre_image);
         }
     }

@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +74,7 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
     private ContentValues contentValues;
     private BookDetails bookDetails;
     private Button buttonRead;
+    private ProgressBar progressBar;
 
 
     @Override
@@ -102,6 +104,8 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
         buttonRead.setVisibility(View.INVISIBLE);
         buttonRead.setOnClickListener(this);
         downlaodBookButton.setOnClickListener(this);
+        progressBar=(ProgressBar) findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
     }
     private void downloadBook(){
         OkHttpClient.Builder httpClient=new OkHttpClient.Builder();
@@ -132,14 +136,17 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
                     downloadInformation(nameFile);
                     Log.d("Details","is "+succes);
                     if(succes==true){
+                        progressBar.setVisibility(View.INVISIBLE);
                         buttonRead.setVisibility(View.VISIBLE);
                     }
                 }
+
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                    Toast.makeText(mContext,"Произошла ошибка",Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -386,7 +393,8 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
                         buttonRead.setVisibility(View.VISIBLE);
                         Toast.makeText(mContext,"Эта книга уже скачена",Toast.LENGTH_SHORT).show();
                     }while (cursor.moveToNext());
-                }else {  downloadBook();}
+                }else {progressBar.setVisibility(View.VISIBLE);
+                    downloadBook();}
                 break;
             case R.id.read_book:
                 Intent intent=new Intent(mContext,ReaderActivity.class);
@@ -418,7 +426,9 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onResponse(Call<ArrayList<FavoriteBook>> call, retrofit2.Response<ArrayList<FavoriteBook>> response) {
                 if(response.code()==200){
-                    addFavoritesBook.setLiked(true);
+           checkNull(response.body());
+           progressBar.setVisibility(View.INVISIBLE);
+
                 }
             }
 
@@ -427,6 +437,13 @@ public class DetailsBook extends AppCompatActivity implements View.OnClickListen
                  Toast.makeText(mContext,"Fail",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void checkNull(ArrayList<FavoriteBook> list){
+       if( list.isEmpty()){
+
+        }else {
+           addFavoritesBook.setLiked(true);
+       }
     }
 }
 

@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,11 +33,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import hackathon.elibrary.Book.DetailsBook;
 import hackathon.elibrary.MyDataBase.DatabaseHelper;
@@ -251,18 +256,20 @@ public class HomeActivity extends AppCompatActivity {
         }));
     }
 
-    @SuppressLint("NewApi")
     private void getNewBook() {
-        Instant instant = Instant.now();
-        Log.d("Home", "До " + instant);
-        instant = instant.minus(7, ChronoUnit.DAYS);
-        Log.d("Home", "После " + instant);
+        Date date =new Date();
+        Calendar calendar=Calendar.getInstance();
+        calendar.add(Calendar.DATE,-7);
+        date=calendar.getTime();
+        String s=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(date);
+        Log.d("Details","date"+s);
         Retrofit retrofit = OkHttpHelper.getRetrofitToken(getToken());
         ApiInterface apiInterface = retrofit.create(ApiInterface.class);
-        Call<ArrayList<HelpBook>> call = apiInterface.getNewBook(true, instant);
+        Call<ArrayList<HelpBook>> call = apiInterface.getNewBook(true,s);
         call.enqueue(new Callback<ArrayList<HelpBook>>() {
             @Override
             public void onResponse(Call<ArrayList<HelpBook>> call, Response<ArrayList<HelpBook>> response) {
+                Toast.makeText(mContext,"responce"+response.code(),Toast.LENGTH_SHORT).show();
                 if (response.code() == 200) {
                     setupNewBookRecyclerView(response.body(), mContext);
                     newBooksProgress.setVisibility(View.INVISIBLE);
@@ -271,9 +278,10 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ArrayList<HelpBook>> call, Throwable t) {
-
+                Toast.makeText(mContext,"fail",Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void createDB() {

@@ -1,6 +1,7 @@
 package hackathon.elibrary.Util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import hackathon.elibrary.Book.DetailsBook;
 import hackathon.elibrary.POJO.Book;
 import hackathon.elibrary.R;
 import okhttp3.ResponseBody;
@@ -30,6 +32,7 @@ import retrofit2.Retrofit;
 public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapter.BookViewHolder>{
 
     private static final String SAVE_TOKEN="saveToken";
+    private static final String ID_BOOK = "idBook";
 
     private ArrayList<Book> bookList;
     private Context mContext;
@@ -37,7 +40,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
     public BookRecyclerAdapter(ArrayList<Book> listBook,Context context){
         this.mContext=context;
         this.bookList=listBook;
-    }
+}
 
 
     @NonNull
@@ -60,18 +63,29 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
     public int getItemCount() {
         return bookList.size();
     }
-    public class BookViewHolder extends  RecyclerView.ViewHolder{
+    public class BookViewHolder extends  RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView txtNameBook, txtLastNameAvtor,txtFirstName,txtPageBook,txtDatePublication,txtGenreBook;
         private ImageView imageCover;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             txtNameBook=(TextView) itemView.findViewById(R.id.name_book);
             txtLastNameAvtor=(TextView) itemView.findViewById(R.id.last_name_avtor);
             txtFirstName=(TextView) itemView.findViewById(R.id.first_name_avtor);
             txtGenreBook=(TextView) itemView.findViewById(R.id.book_genre);
             imageCover=(ImageView) itemView.findViewById(R.id.book_cover);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            int position=getAdapterPosition();
+            int id=bookList.get(position).getId();
+            Intent intent=new Intent(mContext,DetailsBook.class);
+            intent.putExtra(ID_BOOK,id);
+            mContext.startActivity(intent);
         }
     }
     public  String getToken(){
@@ -117,13 +131,14 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
            }
        });
    }
+
+
     public void setFiltrBook(ArrayList<Book> newList){
         bookList=new ArrayList<>();
         bookList.addAll(newList);
         notifyDataSetChanged();
-
-
     }
+
 
 
 
